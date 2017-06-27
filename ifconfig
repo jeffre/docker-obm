@@ -1,0 +1,6 @@
+#!/bin/bash
+# This script fakes the output of ifconfig for the singular purpose of meeting
+# an OBSR requirement in obtaining the MAC address (for licensing)
+
+MAC=$(cat /sys/class/net/eth*/address)
+echo "    ether $MAC"

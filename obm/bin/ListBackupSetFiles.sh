@@ -1,5 +1,5 @@
 #!/bin/sh
-# Ahsay Online Backup Manager 6.29.0.0
+# Ahsay Online Backup Manager 6.27.0.0
 
 ############################  ListBackupSetFiles.sh  ###########################
 # You can use this shell script to list all the files within a backup set from #

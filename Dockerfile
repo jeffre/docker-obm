@@ -1,6 +1,10 @@
 FROM centos:latest
-EXPOSE 8080 8443 9444-9464
 WORKDIR /obm
+
+
+# 'ifconfig' is a fake tool that simply echos the machines MAC address.
+#     This is necessary for the OBM to report local ip.
+COPY ifconfig /usr/bin/
 
 
 # Bootstrap OBM and SIGTERM receiver
@@ -15,19 +19,19 @@ COPY docker-entrypoint.sh /
 
 # Alternative to the above, this copies a nearly-the-same obsr with **only** the
 #  following, space-saving (image reduced by 621 MB), exclusions:
-#  *  java-linux-x86
-#  *  webapps/obs/liveUpdate
-#  *  webapps/obs/doc
-#  *  webapps/obs/download
-#  *  system/ads/
-ADD obm/ config.ini ./
+#  *  jre32/*
+#  *  obm/bin/*.pdf
+COPY obm/ ./
+
+#COPY config.ini /root/.obm/config/
+RUN echo "/root/.obm/" > home.txt
 
 
 # Create the limited user what will be used to run the OBSR application
 #    Note: the userhomes folder needs to be rw for UID/GUID 400
 RUN groupadd --gid 400 ahsay \
-    && useradd --uid 400 --gid 400 ahsay \
-    && chown -R 400:400 .
+    && useradd --uid 400 --gid 400 ahsay #\
+#    && chown -R 400:400 .
 
 
 # De-escalate from root
