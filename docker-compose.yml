@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  obsr:
+    build: .
+    image: yoff/obm:latest
+    restart: on-failure
+    mem_limit: 4g
+    #volumes:
+    #  - ./obm:/obm
+    hostname: docker-obm
+    environment:
+      - TZ=America/Phoenix
+      - USERNAME=jeffre
+      - PASSWORD=secretpassword
+      - SERVER=obsr.example.com
+      - PROTO=https
+      - PROTO=en
+      - BSET-1468557583616=PKCS7Padding,-256,,
