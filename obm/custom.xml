@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<conf>
+  <init default-language="en">
+    <backup-server protocol="http" hostname="" port="80" />
+  </init>
+  <GUI enable-logon-domain="false" hide-server-url="false" hide-select-language-list="false" hide-language-bg="false" hide-language-ca="false" hide-language-cs="false" hide-language-da="false" hide-language-de="false" hide-language-el="false" hide-language-en="false" hide-language-es="false" hide-language-eu="false" hide-language-fi="false" hide-language-fr="false" hide-language-hu="false" hide-language-is="false" hide-language-it="false" hide-language-iw="false" hide-language-ja="false" hide-language-ko="false" hide-language-lt="false" hide-language-nl="false" hide-language-no="false" hide-language-pl="false" hide-language-pt_BR="false" hide-language-pt_PT="false" hide-language-ro="false" hide-language-ru="false" hide-language-sl="false" hide-language-sv="false" hide-language-th_th="false" hide-language-tr="false" hide-language-uk="false" hide-language-zh_cn="false" hide-language-zh_tw="false" />
+</conf>
+

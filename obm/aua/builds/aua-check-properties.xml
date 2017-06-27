@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-check-properties" default="export-properties">
+
+  <!-- ######################### Property Statement ######################### -->
+
+  <!-- Property for Directory Path Separator -->
+  <property name="fs" value="${file.separator}" />
+
+  <!-- Property for AutoUpdateAgent Working Directory -->
+  <dirname  property="aua.dir.work"     file="${ant.file}${fs}.."/>
+  <property name="aua.dir.work.ant"     value="${aua.dir.work}${fs}ant" />
+  <property name="aua.dir.work.ant.lib" value="${aua.dir.work.ant}${fs}lib" />
+  <property name="aua.dir.work.bin"     value="${aua.dir.work}${fs}bin" />
+  <property name="aua.dir.work.ipc"     value="${aua.dir.work}${fs}ipc" />
+  <property name="aua.dir.work.jvm"     value="${aua.dir.work}${fs}jvm" />
+  <property name="aua.dir.work.jvm.bin" value="${aua.dir.work.jvm}${fs}bin" />
+  <property name="aua.dir.work.jvm.lib" value="${aua.dir.work.jvm}${fs}lib" />
+  <property name="aua.dir.work.lib"     value="${aua.dir.work}${fs}lib" />
+  <property name="aua.dir.work.builds"  value="${aua.dir.work}${fs}builds" />
+  <property name="aua.dir.work.ipc.xmlchannel"      value="${aua.dir.work.ipc}${fs}xmlchannel" />
+  <property name="aua.dir.work.ipc.systemtray"      value="${aua.dir.work.ipc}${fs}SystemTray" />
+  <property name="aua.dir.work.update"  value="${aua.dir.work}${fs}update" />
+
+  <!-- Property for AutoUpdateAgent Filename -->
+  <property name="aua.filename.jvm.work" value="auaJW"/>
+
+  <!-- Property for AutoUpdateAgent Config File -->
+  <property name="aua.file.config" value="config.xml" />
+
+  <!-- Property for AutoUpdateAgent Working File -->
+  <property name="aua.file.work.ipc.systemtray.shutdown" value="${aua.dir.work.ipc.systemtray}${fs}shutdown" />
+  <property name="aua.file.work.ipc.auac.running" value="${aua.dir.work.ipc}${fs}auac-running" />
+  <property name="aua.file.work.config" value="${aua.dir.work}${fs}${aua.file.config}" />
+  <property name="aua.file.work.lib.aua.jar" value="${aua.dir.work.lib}${fs}aua.jar" />
+  <property name="aua.file.work.message.xml" value="${aua.dir.work}${fs}auas-message.xml" />
+  <property name="aua.file.work.restore.xml" value="${aua.dir.work}${fs}restore.xml" />
+
+  <!-- Property for Product Home Directory -->
+  <!-- Must be placed after AutoUpdateAgent Working Directory -->
+  <dirname  property="aua.dir.home" file="${aua.dir.work}"/>
+  <property name="aua.dir.home.bin" value="${aua.dir.home}${fs}bin" />
+  <property name="aua.dir.home.ipc" value="${aua.dir.home}${fs}ipc" />
+  <property name="aua.dir.home.jvm" value="${aua.dir.home}${fs}jvm" />
+  <property name="aua.dir.home.ipc.scheduler" value="${aua.dir.home.ipc}${fs}Scheduler" />
+  <property name="aua.dir.home.util.bin" value="${aua.dir.home}${fs}util${fs}bin" />
+  <property name="aua.dir.work.ipc.services" value="${aua.dir.work.ipc}${fs}Services" />
+
+  <!-- Property for Product Home File -->
+  <property name="aua.file.home.ipc.scheduler.running" value="${aua.dir.home.ipc.scheduler}${fs}running" />
+  <property name="aua.file.home.ipc.scheduler.stop"    value="${aua.dir.home.ipc.scheduler}${fs}stop" />
+
+  <!-- Property for Observice Status Properties file -->
+  <property name="aua.file.work.ipc.services.observices.properties" value="${aua.dir.work.ipc.services}${fs}observices.properties" />
+
+  <!-- Property for JVM executable -->
+  <property name="aua.jvm.home"           value="${aua.dir.home.jvm}${fs}bin${fs}java" />
+  <property name="aua.jvm.home.scheduler" value="${aua.dir.home.jvm}${fs}bin${fs}bschJW" />
+  <property name="aua.jvm.work"           value="${aua.dir.work.jvm}${fs}bin${fs}bJW" />
+
+  <!-- Property for Java Classname -->
+  <property name="aua.classname.auas"                     value="auas" />
+  <property name="aua.classname.auac"                     value="auac" />
+  <property name="aua.classname.auaspawn"                 value="auaspawn" />
+  <property name="aua.classname.check.backup.set.running" value="CheckBackupSetRunning" />
+  <property name="aua.classname.check.ipc.running"        value="CheckIPCRunning" />
+  <property name="aua.classname.check.scheduler.running"  value="CheckSchedulerRunning" />
+  <property name="aua.classname.generate.properties"      value="GenerateProperties" />
+  <property name="aua.classname.get.file"                 value="GetFile" />
+
+  <!-- Property for Exported Property Filename -->
+  <property name="file.local.machine.properties" value="${aua.dir.work.builds}${fs}local-machine.properties" />
+
+  <!-- ######################### Procedure Statement ######################### -->
+
+  <!-- Procedure for Checking Local Machine Properties -->
+  <!-- target name="export-properties" depends="check-os, check-own-jvm-exists"-->
+  <target name="export-properties" depends="determine-aua-jvm-work-by-os">
+    <taskdef name="genproperties"
+             classname="${aua.classname.generate.properties}"
+             classpath="${aua.file.work.lib.aua.jar}"/>
+    <genproperties destfile="${file.local.machine.properties}" prefix="aua."/>
+  </target>
+
+  <target name="reload-properties" depends="check-os">
+    <taskdef name="genproperties"
+             classname="${aua.classname.generate.properties}"
+             classpath="${aua.file.work.lib.aua.jar}"/>
+    <genproperties destfile="${file.local.machine.properties}" prefix="aua."/>
+  </target>
+
+  <!-- VM Properties -->
+  <target name="check-own-jvm-exists">
+    <available file="${aua.dir.home.jvm}" type="dir" property="aua.flag.home.jvm.exists" />
+    <available file="${aua.dir.work.jvm}" type="dir" property="aua.flag.work.jvm.exists" />
+    <antcall target="copy-aua-jvm" inheritall="true" />
+  </target>
+
+  <target name="copy-aua-jvm" if="flag.create.aua.own.jvm" depends="verify-copy-aua-jvm">
+    <mkdir dir="${aua.dir.work.jvm}" />
+    <copy todir="${aua.dir.work.jvm}" preservelastmodified="true">
+      <fileset dir="${aua.dir.home.jvm}">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+    <copy todir="${aua.dir.work.jvm.lib}" preservelastmodified="true">
+      <fileset dir="${aua.dir.work.lib}">
+        <include name="tools.jar" />
+      </fileset>
+    </copy>
+    <property name="aua.dir.work.jvm.exists" value="true" />
+    <antcall target="gen-auajw-for-windows-os" inheritall="true" />
+    <antcall target="gen-auajw-for-unix-like-os" inheritall="true" />
+  </target>
+
+  <target name="verify-copy-aua-jvm">
+    <condition property="flag.create.aua.own.jvm" value="true">
+      <and>
+        <isset property="aua.flag.home.jvm.exists" />
+        <not>
+          <isset property="aua.flag.work.jvm.exists" />
+        </not>
+      </and>
+    </condition>
+  </target>
+
+  <target name="gen-auajw-for-windows-os" if="aua.os.family.is.windows">
+    <copy file="${aua.dir.work.jvm.bin}${fs}java.exe" tofile="${aua.dir.work.jvm.bin}${fs}${aua.filename.jvm.work}.exe" />
+  </target>
+
+  <target name="gen-auajw-for-unix-like-os" if="aua.os.family.is.unix-like">
+    <copy file="${aua.dir.work.jvm.bin}${fs}java" tofile="${aua.dir.work.jvm.bin}${fs}${aua.filename.jvm.work}" />
+    <chmod perm="ugo+rx" type="file">
+      <fileset dir="${aua.dir.work.jvm.bin}">
+        <include name="**/*"/>
+        <include name="**/*.*"/>
+      </fileset>
+    </chmod>
+  </target>
+
+  <target name="determine-aua-jvm-work-by-os" depends="check-os, check-own-jvm-exists">
+    <condition property="aua.jvm.work" value="${aua.dir.work.jvm.bin}${fs}${aua.filename.jvm.work}.exe" else="${aua.dir.work.jvm.bin}${fs}${aua.filename.jvm.work}">
+      <istrue value="${aua.os.family.is.windows}"/>
+    </condition>
+  </target>
+
+  <!-- OS Properties -->
+  <target name="check-os">
+    <condition property="aua.os.family.is.windows" value="true">
+      <os family="windows" />
+    </condition>
+    <condition property="aua.os.family.is.mac" value="true">
+      <os family="mac" />
+    </condition>
+    <condition property="aua.os.family.is.unix-like" value="true">
+      <and>
+        <os family="unix" />
+        <not>
+          <os family="mac" />
+        </not>
+      </and>
+    </condition>
+    <condition property="aua.os.family.is.netware" value="true">
+      <os family="netware" />
+    </condition>
+  </target>
+
+</project>

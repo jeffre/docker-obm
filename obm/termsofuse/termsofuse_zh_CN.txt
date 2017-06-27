@@ -1,0 +1,12 @@
+﻿使用条款
+1. 所有由Ahsay Systems Corporation 的软件皆以“现况”提供，因此并没有任何形式的保证，并且在任何情况下Ahsay Systems Corporation 绝不会承担任何因使用Ahsay Systems Corporation 的软件而导致的任何直接、间接、附带、特别、衍生性的数据丢失赔偿及责任。
+2. Ahsay Systems Corporation 给予您一个非独有、不可转让、不可代发的牌照。您只可以安装和执行一个软件的复制副本在单一台电脑上来使用Ahsay Systems Corporation 的软件。 Ahsay Systems Corporation 的软件的结构、系统、编码来源和文件都包含了Ahsay Systems Corporation 的商业秘密，您清楚和同意不会（1）代发牌照、租赁、转让和分发Ahsay Systems Corporation 的软件；（2 ）改变、套用、翻译或复制Ahsay Systems Corporation 的软件；（3）拆解、拆卸和企图取得软件的编码来源；（4）提取软件部分的数据供其它程式所用；（5）删除、改变、或用任何途径使到Ahsay Systems Corporation 的软件的商标和权利模糊化。
+3. 所有内容，包括本网站、包括文字、图形、标识、按钮图标、图像和软件皆是Ahsay Systems Corporation 或其内容供应商的财产并受到国际版权法保护。所有在网站中使用的程序皆是Ahsay Systems Corporation 或其软件供应商的财产并受到国际版权法保护。任何企图对Ahsay Systems Corporation 的软件使用逆向工程、反汇编或反编译的程序，除非是明确允许的，否则皆为法律所禁止。
+4. Ahsay Systems Corporation 会透过电子邮件或普通邮件寄发通告给您。 Ahsay Systems Corporation 也可以把更改条款通告或其他事项通告张贴或链接在Ahsay Systems Corporation 所提供的服务中。
+5. 虽然Ahsay Systems Corporation 没有意图监视您的网络数据传输， 但当Ahsay Systems Corporation 意识到并确定有害或冒犯一般公众时， Ahsay Systems Corporation 保留有关修改或删除数据内容的权利。您的帐户可能会因违反这一规则而遭到被终止或暂停帐户。
+6. 这个系统的完整性有赖于适当使用电子邮件作为通讯媒体。使用电子邮件系统直接或间接作为垃圾邮件的工具，或以外其它目的都是被禁止的。
+7. "Ahsay Systems Corporation" 保留权利在任何时候暂时或永久修改、停止服务（或其任何部分），而无须另行通知。
+8. 你并没有企图以 Ahsay Systems Corporation 所提供的软件或服务从事任何但不限于非法活动、企图危及任何网络帐户、一个网站或一个国家的安全。适当的法律手续时也将 Ahsay Systems Corporation 发现有任何这些活动 Ahsay Systems Corporation 得基于其自行之考虑，或 Ahsay Systems Corporation 认为你已经违反本服务条款的明文规定及精神，于通知或未通知之情形下，随时终止你的使用权（或其任何部分）或服务。你同意依本条款任何规定提供之软件或服务， Ahsay Systems Corporation 无需进行事先通知即可随时终止提供软件及服务。你同意若本服务之使用被终止，Ahsay Systems Corporation 对你或任何第三者均不承担责任。
+9. 无论是基于违约、侵权（包括疏忽）、产品责任或其他，或者即使 Ahsay Systems Corporation 或其业务代表已被告知这些损害的可能性，Ahsay Systems Corporation 一概不承担任何直接、间接、附带、特别、衍生性或惩罚性赔偿（包括但不限于利润、商誉、使用、资料损失或其他无形损失）。
+10. 你应负责保管好自己帐户的登入名称、密码和加密钥匙。你清楚和了解你是私人加密钥匙的唯一拥有者及知情人，亦会对此加密钥匙的应用及保安负上所有的责任，对于一切由此加密钥匙所做成的损失（包括不能还原已备份的数据及资料或外泄），Ahsay Systems Corporation 绝不承担任何直接、间接、附带、特别、衍生性或惩罚性赔偿及责任。如果你忘记或丢失了加密钥匙，你将不能够恢复你已经备份了的数据，在没有加密钥匙的情况下，Ahsay Systems Corporation 没有任何方法恢复数据。
+Ahsay Systems Corporation专重你的私隐。除非你主动把你的个人资料提交给我们，我们绝不私下收集你的个人资料。不过，为提高顾客服务质素、疑难排解或其他软体开发的目的，我们有可能收集你的系统资料进行分析，但我们绝对不有把我们所得的资料转售或交付给其他第三者。

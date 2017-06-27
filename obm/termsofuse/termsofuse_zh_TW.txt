@@ -1,0 +1,12 @@
+﻿使用條款
+1. 所有由 Ahsay Systems Corporation 的軟件皆以“現況”提供，因此並沒有任何形式的保證，並且在任何情況下 Ahsay Systems Corporation 絕不會承擔任何因使用 Ahsay Systems Corporation 的軟件而導致的任何直接、間接、附帶、特別、衍生性的數據丟失賠償及責任。
+2. Ahsay Systems Corporation 給予您一個非獨有、不可轉讓、不可代發的牌照。您只可以安裝和執行一個軟件的複製副本在單一台電腦上來使用 Ahsay Systems Corporation 的軟件。Ahsay Systems Corporation 的軟件的結構、系統、編碼來源和文件都包含了 Ahsay Systems Corporation 的商業秘密，您清楚和同意不會（1）代發牌照、租賃、轉讓和分發 Ahsay Systems Corporation 的軟件；（2）改變、套用、翻譯或複製 Ahsay Systems Corporation 的軟件；（3）拆解、拆卸和企圖取得軟件的編碼來源；（4）提取軟件部分的數據供其它程式所用；（5）刪除、改變、或用任何途徑使到 Ahsay Systems Corporation 的軟件的商標和權利模糊化。
+3. 所有內容，包括本網站、包括文字、圖形、標識、按鈕圖標、圖像和軟件皆是 Ahsay Systems Corporation 或其內容供應商的財產並受到國際版權法保護。所有在網站中使用的程序皆是Ahsay Systems Corporation 或其軟件供應商的財產並受到國際版權法保護。任何企圖對 Ahsay Systems Corporation 的軟件使用逆向工程、反彙編或反編譯的程序，除非是明確允許的，否則皆為法律所禁止。
+4. Ahsay Systems Corporation 會透過電子郵件或普通郵件寄發通告給您。 Ahsay Systems Corporation 也可以把更改條款通告或其他事項通告張貼或鏈接在Ahsay Systems Corporation 所提供的服務中。
+5. 雖然 Ahsay Systems Corporation 沒有意圖監視您的網絡數據傳輸， 但當 Ahsay Systems Corporation 意識到並確定有害或冒犯一般公眾時， Ahsay Systems Corporation 保留有關修改或刪除數據內容的權利。您的帳戶可能會因違反這一規則而遭到被終止或暫停帳戶。
+6. 這個系統的完整性有賴於適當使用電子郵件作為通訊媒體。使用電子郵件系統直接或間接作為垃圾郵件的工具，或以外其它目的都是被禁止的。
+7. "Ahsay Systems Corporation" 保留權利在任何時候暫時或永久修改、停止服務（或其任何部分），而無須另行通知。
+8. 你並沒有企圖以 Ahsay Systems Corporation 所提供的軟件或服務從事任何但不限於非法活動、企圖危及任何網絡帳戶、一個網站或一個國家的安全。適當的法律手續時也將 Ahsay Systems Corporation 發現有任何這些活動 Ahsay Systems Corporation 得基於其自行之考慮，或 Ahsay Systems Corporation 認為你已經違反本服務條款的明文規定及精神，於通知或未通知之情形下，隨時終止你的使用權（或其任何部分）或服務。你同意依本條款任何規定提供之軟件或服務，Ahsay Systems Corporation 無需進行事先通知即可隨時終止提供軟件及服務。你同意若本服務之使用被終止，Ahsay Systems Corporation 對你或任何第三者均不承擔責任。
+9. 無論是基於違約、侵權（包括疏忽）、產品責任或其他，或者即使 Ahsay Systems Corporation 或其業務代表已被告知這些損害的可能性，Ahsay Systems Corporation 一概不承擔任何直接、間接、附帶、特別、衍生性或懲罰性賠償（包括但不限於利潤、商譽、使用、資料損失或其他無形損失）。
+10. 你應負責保管好自己帳戶的登入名稱、密碼和加密鑰匙。你清楚和了解你是私人加密鑰匙的唯一擁有者及知情人，亦會對此加密鑰匙的應用及保安負上所有的責任，對於一切由此加密鑰匙所做成的損失（包括不能還原已備份的數據及資料或外洩），Ahsay Systems Corporation 絕不承擔任何直接、間接、附帶、特別、衍生性或懲罰性賠償及責任。如果你忘記或丟失了加密鑰匙，你將不能夠恢復你已經備份了的數據，在沒有加密鑰匙的情況下，Ahsay Systems Corporation 沒有任何方法恢復數據。
+Ahsay Systems Corporation專重你的私隱。除非你主動把你的個人資料提交給我們，我們絕不私下收集你的個人資料。不過，為提高顧客服務質素、疑難排解或其他軟體開發的目的，我們有可能收集你的系統資料進行分析，但我們絕對不有把我們所得的資料轉售或交付給其他第三者。

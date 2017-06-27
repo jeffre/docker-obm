@@ -1,0 +1,313 @@
+                 Java(tm) Secure Socket Extension 1.0.3_02
+
+                               Changes
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0.3 FCS release
+---------------------------------------------------------------------------
+This version of the JSSE 1.0.3_02 release has been resigned with an
+updated certificate that extends the package's validity period to
+April 17, 2004.
+
+The JSSE 1.0.3_02 release is a update release of 1.0.3_01 which is
+primarily a bug fix release.
+
+	* For all RSAPrivateKey objects whose prime factor P is less than
+	  prime factor Q, JSSE would not verify the signature correctly and
+	  thus considers a legitimate certificate to be invalid. This is
+	  fixed in this release.
+
+The JSSE 1.0.3_01 release is a update release of 1.0.3 FCS which is
+primarily a bug fix release.
+
+	* When exchanging an RSA-based PreMasterSecret, RFC 2246-TLSv1
+	  specifies that the PreMasterSecret message should contain the
+	  latest (newest) version supported by the client. Some SSL
+	  implementations send the current session's version number
+	  (incorrect), while others send the correct message. Most
+	  servers accept messages of either type.
+
+	  For compatibility reasons, JSSE 1.0.3_01 by default uses the
+	  incorrect behavior when sending PreMasterSecrets on behalf of
+	  clients.  However, if a server is encountered that requires the
+	  correct behavior, setting the "com.sun.net.ssl.rsaPreMasterSecretFix"
+	  system property to true will cause the outbound client
+	  PreMasterSecret messages to use the correct behavior.
+
+	* If an SSLContext was initialized (SSLContext.init())
+	  with your own instance of an X509TrustManager implementation,
+	  JSSE 1.0.3 incorrectly called the isClientTrusted() method when
+	  making server trust decisions.  This has been fixed.
+
+	* The fix for the BasicContraints Undefined Path fixed in 1.0.2
+	  (below) was inadvertantly removed in 1.0.3.  The fix was
+	  reintroduced.
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0.2 FCS release
+---------------------------------------------------------------------------
+
+The JSSE 1.0.3 release is primarily a bug fix release.
+
+	* The system property "com.sun.net.ssl.dhKeyExchangeFix" was
+	  incorrectly defaulting to "false" in JSSE 1.0.2.  The
+	  SSL_DHE_DSS_* suites continued to encode the DSA signatures
+	  incorrectly.  (See below.)  JSSE 1.0.3 now sets this
+	  property to true, and is compatible with other SSL
+	  implementations.
+
+	  Note:  JSSE in the J2SDK v1.4 also has this switch set to
+	  "true."  However, if contacting a previous JSSE release,
+	  switches on both sides should be set the same.
+
+	* The JSSE 1.0.3 jar files are now signed.  Crypto-strength
+	  pluggability information are available in the jar's
+	  manifest.
+
+	* There are many enhancements to the default X509TrustManager
+	  implementation.
+
+	* The HttpsURLConnection implementation class now
+	  rereads the configuration system properties such as
+	  "https.proxyHost", "https.proxyPort", "https.cipherSuites",
+	  etc. before each connection, instead of once at class
+	  instantiation.
+
+	* There were several robustness and performance enhancements.
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0.1 FCS release
+---------------------------------------------------------------------------
+
+The JSSE 1.0.2 release has the following changes:
+
+	* Recent modifications to the United States export regulations
+	  now allow us to include stronger cryptographic algorithms in
+	  our global version of JSSE.
+
+	* The JSSE reference implementation was slightly modified to
+	  run on PersonalJava(tm) 3.1.
+
+	* Documentation improvements including a substantially
+	  expanded and clarified JSSE API User's Guide.
+
+There were also a number of bug fixes.
+
+	* An X509 certificate bug in the releases prior to JDK 1.3
+	  caused SSL negotations to fail.  If a received certificate
+	  contained an undefined PathLen in one of its BasicContraints,
+	  an application would report:
+
+		javax.net.ssl.SSLException:  untrusted server cert chain
+
+	* There is enhanced debugging support for the supplied
+	  X509KeyManager, X509TrustManager, and the default
+	  SSLContext.
+
+	* Duke's certificate in sample code's keystores was reissued.
+	  Some SSL applications which had trouble negotiating with a
+	  JSSE-enabled application.
+
+	* The JSSE sample code bundle was updated.  There were a number
+	  of bug and documentation fixes.
+
+	* A bug in the SSL_DHE_DSS_* cipher suites was encoding the
+	  DSA signatures incorrectly when those signatures were used as
+	  part of the server key exchange message.
+
+	  There is a short-term interoperability system property called:
+
+	  	"com.sun.net.ssl.dhKeyExchangeFix"
+
+	  You can emulate the old behaviour by setting the system
+	  property to "false".
+
+	* In JSSE 1.0.1, the search algorithm for a truststore for a
+	  custom TrustManager was handled inconsistently with respect
+	  to a default SSLContext TrustManager.  Now all default
+	  TrustManagers use the same search algorithm.
+
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0 FCS release
+---------------------------------------------------------------------------
+
+The JSSE 1.0.1 release is primarily a bug fix release.
+
+	* While verifying a received certificate chain, JSSE 1.0
+	  checked each certificate element to determine if its validity
+	  period had expired.  If so, it threw the SSLException
+	  "untrusted server cert chain" or "untrusted client cert
+	  chain".  This restriction has been relaxed by now consulting
+	  the local trusted cert entries for a replacement (updated)
+	  certificate element that has not expired.
+
+	* It is sometimes useful to "disable" the certificate hostname
+	  verification during project development.  A single
+	  certificate can now be shared among many development machines
+	  so that the hostnames don't need to match.  A bug was fixed in
+	  the HttpsURLConnection hostname verifier code that now allows
+	  this functionality to work.
+
+	* The LDAP service provider in JNDI provoked a race condition
+	  in the JDK 1.3.
+
+	* The JSSE server handshaker no longer uses the peer's host
+	  name to identify its peer for a session.  It now uses the
+	  peer's IP address for identification.
+
+	* There were several other minor bug fixes, and some
+	  documentation updates.
+
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0 beta release
+---------------------------------------------------------------------------
+
+The following are the significant changes since the beta release:
+
+	* the behavior of the getDefault() methods on SSLSocketFactory
+	  and SSLServerSocketFactory has been made more flexible.
+	  You can now override the built-in default factory class
+	  implementations by setting security properties of the
+	  java.security.Security class. The class names for the factory
+	  implementations can be set via the ssl.ServerSocketFactory.provider
+	  and ssl.ServerSocketFactory.provider properties.
+
+	  The default factories in the JSSE reference implementation
+	  has been made more flexible in how they can be configured.
+	  The following system properties are now recognized and used
+	  to initialize the key store. Typically getDefault() returns
+	  factories capable of creating sockets that do not
+	  self-authenticate but can authenticate the remote peer.
+	  You can enable self-authentication by configuring the default
+	  socket factories to use a keystore containing authentication
+	  credentials. However, doing so will expose a self-authentication
+	  capable socket factories to all code running in the JVM which
+	  might or might not be a problem depending upon the application
+	  it's security model.
+
+
+	    * javax.net.ssl.keyStore
+
+		This can be set to the name of a KeyStore file. The
+		default is no key store file.
+
+	    * javax.net.ssl.keyStoreType
+
+		This can be set to the type of the KeyStore. The
+		default is the result value of KeyStore.getDefaultType().
+
+	    * javax.net.ssl.keyStorePassword
+
+		This can be set to the password or passphrase that should
+		be used when loading the key store. The default is
+		no password.
+
+
+	  Similar system properties exist to configure the "trust store"
+	  KeyStore used to make trust decisions when authenticating
+	  remote peers:
+
+	    * javax.net.ssl.trustStore
+
+		This can be set to the name of a file. The
+		default is either ${java.home}/lib/security/jssecacerts, or
+		if that does not exist, then ${java.home}/lib/security/cacerts.
+
+	    * javax.net.ssl.trustStoreType
+
+		This can be set to the type of the store. The
+		default is the result value of KeyStore.getDefaultType().
+
+	    * javax.net.ssl.trustStorePassword
+
+		This can be set to the password or passphrase that should
+		be used when loading the trust store. The default is
+		no password.
+
+	  The resulting key and trust stores are used to initialize the
+	  implementation of the default socket and server socket factories.
+	  The system properties containing passwords are removed after
+	  they are accessed.
+
+	  In the JSSE reference implementation, KeyStore instance are
+	  created and used to initialize key and trust managers using
+	  the default KeyManagerFactory and TrustManagerFactory
+	  algorithms (see below).
+
+	* a new getDefaultAlgorithm() static methods has been added to
+	  KeyManagerFactory and TrustManagerFactory to return the
+	  default manager names. The default name can be configured
+	  via security properties named sun.ssl.keymanager.type and
+	  sun.ssl.trustmanager.type. The default for the JSSE
+	  reference implementation is currently SunX509.
+
+	* the security check performed by the getSessionContext() method
+	  on SSLSession has been changed and is now documented. It now
+	  requires the calling thread to have java.net.NetPermission
+	  for "getSSLSessionContext".
+
+	* a bug with TLS and the encoding of RSA-based client
+	  key exchange message encoding has been fixed.
+
+	* the extension jar files now contain package versioning
+	  information in the manifests.
+
+	* new variants of the getInstance() method for classes in
+	  com.sun.net.ssl take a Provider instance parameter.
+
+	* when resuming sessions we now send a "client hello" message
+	  with the same protocol version numbers that were previously
+	  negotiated for the session.
+
+	* the SSLSession field of HandshakeCompletedEvent is now
+	  transient.
+
+	* the PKCS12 KeyStore implementation now verifies the
+	  integrity of the file.
+
+	* the SSLContext init() method now actually uses the SecureRandom
+	  parameter.
+
+
+---------------------------------------------------------------------------
+Changes since the JSSE 1.0 early access release
+---------------------------------------------------------------------------
+
+	* the SunX509 TrustManagerFactory now first checks for a "jssecacerts"
+	  file in your JRE's lib/security directory first before falling
+	  back on checking for a "cacerts" file. These files are used
+	  as a source of trusted root CA certificates if you supply a null
+	  KeyStore instance to the init() method when using the SunX509
+	  implementation of TrustManagerFactory. This allows you to seperate
+	  the trusted CA roots used for code signing from the list used for
+	  secure sockets.
+
+	* the name of the JSSE reference implementation security provider is
+	  now "SunJSSE" instead of "JSSE". This was done to be more
+	  consistent the "SunJCE" provider name used with the JCE
+	  reference security provider. This change does not impact the
+	  name of the provider class, just the provider name registered with
+	  the java.security.Security class.
+
+	* a bug with setUseClientMode() has been fixed.
+
+	* the 3 JCA-based classes in com.sun.net.ssl now have getInstance()
+	  methods that take a direct Provider instance to use.
+
+	* the are now additional https URL apis in com.sun.net.ssl that
+	  allow customization of certificate common name verification
+	  and allow custom socket factories to be configured and used
+	  for https requests. Among other things, this enables
+	  client authentication for https.
+
+	* a bug that prevented client-side sessions from being cached
+	  and reused correctly has been fixed which provides a major
+	  client-side performance boost.
+
+	* support for dynamic debug tracing has been added in a style
+	  similar to that used for debugging access control failures
+	  in Java 2. You can configure this via the javax.net.debug
+	  system property. A value of "help" will dump out the various
+	  options.

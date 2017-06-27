@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="startup-cdp" default="startup-cdp">
+
+  <!-- Properties File Name -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <!-- Check and Load properties file -->
+  <target name="check-local-machine-properties"
+          unless="flag.local.machine.properties.file.exists"
+          depends="check-properties-file-exists">
+    <ant antfile="aua-check-properties.xml"/>
+  </target>
+
+  <target name="check-properties-file-exists">
+    <available file="${file.local.machine.properties}" type="file" property="flag.local.machine.properties.file.exists" />
+  </target>
+
+  <target name="startup-cdp" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <antcall target="run-cdp-windows"   inheritAll="true" />
+  </target>
+
+  <target name="get-cdp-service-name">
+    <xmlproperty file="${aua.file.work.config}"/>
+    <condition property="aua.win.service.name.new.cdpservice" value="OBCDPService" else="OBACDPService">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+  </target>
+
+  <target name="check-observices-properites-file-exist">
+    <condition property="flag.is.observices.properties.file.exist">
+      <available file="${aua.file.work.ipc.services.observices.properties}" />
+    </condition>
+  </target>
+
+  <target name="load-observices-properties" depends="check-observices-properites-file-exist" if="flag.is.observices.properties.file.exist">
+    <loadproperties srcfile="${aua.file.work.ipc.services.observices.properties}" />
+  </target>
+
+  <target name="check-observices-properties-exist" depends="load-observices-properties">
+    <condition property="flag.is.observice.cdpservice.service.status.set" >
+      <isset property="observice.cdpservice.service.status" />
+    </condition>
+    <condition property="flag.is.observice.cdpservice.service.cmd.return.value.set" >
+      <isset property="observice.cdpservice.service.cmd.return.value" />
+    </condition>
+  </target>
+
+  <target name="set-cdp-service-status" depends="check-observices-properties-exist">
+    <ant antfile="service-status-tools.xml" target="set-service-status" inheritall="true">
+      <property name="param.observice.name" value="${aua.win.service.name.new.cdpservice}" />
+      <property name="param.observice.status" value="${observice.cdpservice.service.status}" />
+      <property name="param.observice.return.value" value="${observice.cdpservice.service.cmd.return.value}" />
+      <property name="param.flag.is.observice.service.status.set" value="${flag.is.observice.cdpservice.service.status.set}"/>
+      <property name="param.flag.is.observice.service.cmd.return.value.set" value="${flag.is.observice.cdpservice.service.cmd.return.value.set}" />
+    </ant>
+  </target>
+
+  <target name="check-is-cdp-process-already-set" depends="check-observices-properties-exist">
+    <!-- if the values are set, assume that the cdp process already set -->
+    <condition property="flag.is.cdp.process.already.set">
+      <or>
+        <istrue value="${flag.is.observice.cdpservice.service.status.set}" />
+        <istrue value="${flag.is.observice.cdpservice.service.cmd.return.value.set}" />
+      </or>
+    </condition>
+  </target>
+
+  <!-- Platform dependant sub-procedures -->
+  <target name="run-cdp-windows" depends="get-cdp-service-name" if="aua.os.family.is.windows">
+    <echo message="Start to set the service of the CDPService... "/>
+    <antcall inheritall="true" target="set-cdp-service-status" />
+    <echo message="Startup cdpservice service" />
+    <antcall inheritall="true" target="service-start-cdp-process"/>
+  </target>
+  <target name="service-start-cdp-process"  depends="check-is-cdp-process-already-set" unless="flag.is.cdp.process.already.set">
+    <property name="executable.win.net.command" value="net.exe" />
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="start ${aua.win.service.name.new.cdpservice}" />
+    </exec>
+  </target>
+
+</project>

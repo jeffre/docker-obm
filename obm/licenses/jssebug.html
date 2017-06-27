@@ -1,0 +1,71 @@
+<html>
+
+<head>
+<title>Known Bugs in JSSE 1.0.3 </title>
+</head>
+
+<body bgcolor=#ffffff>
+
+<hr>
+
+<center>
+
+<H1>Java<SUP><FONT SIZE=-2>TM</FONT></SUP> Secure Socket Extension 1.0.3 </H1>
+
+<H1>Known Bugs</H1>
+
+</center>
+
+<hr>
+
+<OL>
+<LI>
+If JSSE receives a fatal SSL alert message, it invalidates the current
+session and closes the socket.  It should also throw an exception
+stating the cause of the problem, but currently doesn't.  Later
+operations such as read() or write() on the socket will correctly
+report that the socket is closed, but with no reason given.
+
+<P>
+<LI>
+The "PKCS12" KeyStore type included in the JSSE reference
+implementation security provider only supports load() but not save().
+This means that the keytool utility may be used to view but not edit
+pkcs12 files.  The implementation supports PBEWithSHAAnd3KeyTripleDES
+for shrouded private keys and PBEWithSHAAnd40BitRC2 for safe contents
+elements.  This should be compatible with PKCS12 files exported by
+Netscape Communicator version 4.04 and later.  PKCS12 files using other
+algorithms can first be imported to Communicator and then exported in a
+compatible format.
+
+</OL>
+
+<!-- Body text ends here -->
+
+<!-- ============================================================== -->
+<HR SIZE=3 NOSHADE>
+
+<TABLE BORDER="0" WIDTH="100%">
+
+<TR VALIGN=TOP>
+
+<TD>
+
+<P> Copyright &#169;</A> 2002
+   <A HREF="http://www.sun.com/">Sun Microsystems, Inc.</A>
+    All Rights Reserved.</FONT></P>
+
+   <FONT SIZE="-1">
+   Please send comments to:
+	<a href="mailto:java-security@sun.com">java-security@sun.com</a>.
+   </FONT>
+
+</TD>
+
+</TR>
+
+</TABLE>
+
+</body>
+
+</html>

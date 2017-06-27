@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# scheduler: Startup Online Backup Scheduler (Ahsay Online Backup Manager)
+#
+# chkconfig: 35 99 99
+#
+# description: Running obm-scheduler on system startup
+
+case "$1" in
+'start')
+        echo "Starting Online Backup Scheduler"
+        APP_HOME=@sed.product.home@
+        if [ -f "${APP_HOME}/bin/Scheduler.sh" ]; then
+        nohup sh "${APP_HOME}/bin/Scheduler.sh" > /dev/null
+        fi
+        echo ""
+        ;;
+'stop')
+        APP_HOME=@sed.product.home@
+        touch "${APP_HOME}/ipc/Scheduler/stop"
+        ;;
+*)
+        echo "Usage: $0 { start | stop }"
+        ;;
+esac
+

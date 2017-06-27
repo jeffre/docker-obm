@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<project name="Application NIX Deployment Procedure" default="remove-config-folder">
+
+  <!-- Commonly Used Properties -->
+  <property name="fs" value="${file.separator}" />
+  <dirname property="ref.dirpath.util.builds"  file="${ant.file}"/>
+
+  <!-- ###############  IMPORT THE DEPLOYMENT STRUCTURE PROPERTIES #####################-->
+  
+  <import file="${ref.dirpath.util.builds}${fs}app-config.xml" />
+
+  <!-- ###################  DEFINE AUTOUPGRADE SUB PROCEDURES #######################-->
+  
+  <target name="prepare-file-permission">
+    <echo message="Add execution permission to *.sh in ${obc.dirpath.app.bin}"/>
+    <exec executable="chmod" dir="${obc.dirpath.app.bin}">
+      <arg line="755 *.sh"/>
+    </exec>
+    <echo message="Add execution permission to *.sh in ${obc.dirpath.app.aua.bin}"/>
+    <exec executable="chmod" dir="${obc.dirpath.app.aua.bin}">
+      <arg line="755 *.sh"/>
+    </exec>
+    <echo message="Add execution permission to ${obc.dirpath.app.home}/ipc"/>
+    <exec executable="chmod" dir="${obc.dirpath.app.home}">
+      <arg line="-R 777 ipc"/>
+    </exec>
+    <echo message="Add execution permission to ${obc.dirpath.app.aua}/ipc"/>
+    <exec executable="chmod" dir="${obc.dirpath.app.aua}">
+      <arg line="-R 777 ipc"/>
+    </exec>
+    <echo message="Add execution permission to ${obc.dirpath.app}/home.txt"/>
+    <exec executable="chmod" dir="${obc.dirpath.app.home}">
+      <arg line="777 home.txt"/>
+    </exec>
+  </target>
+
+  <!-- ###################  DEFINE AUTOUPGRADE RELATED PROCEDURES #######################-->
+  
+  <target name="prepare-deployment-runtime" depends="init-obc-deployment-properties">
+    <antcall inheritall="true" target="prepare-file-permission"/>
+    <antcall inheritall="true" target="setup-autoupdateagent-config"/>
+    <antcall inheritall="true" target="setup-config-ini"/>
+  </target>
+
+</project>

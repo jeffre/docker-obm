@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+
+# PROVIDE: @sed.script.name@
+# REQUIRE: NETWORKING SERVERS DAEMON
+# BEFORE: LOGIN
+# KEYWORD: AutoUpdateAgent OBM
+
+@sed.script.name@_start()
+{
+    echo "Start AutoUpdateAgent for [ @nix.app.product.name@ ]$@"
+    nohup sh -c "@sed.autoupdate.home@/bin/startup.sh" &> /dev/null
+    sleep 5
+}
+
+@sed.script.name@_stop()
+{
+    echo "Shut down AutoUpdateAgent for [ @nix.app.product.name@ ]$@"
+    nohup sh -c "@sed.autoupdate.home@/bin/shutdown.sh" &> /dev/null
+    sleep 5
+}
+
+@sed.script.name@_usage()
+{
+    echo $"usage: $0 {start|stop}"
+}
+
+case "$1" in
+    start)    @sed.script.name@_start ;;
+    stop)     @sed.script.name@_stop ;;
+    **)       @sed.script.name@_usage
+              exit 1 ;;
+esac

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-core-uninstall" default="uninstall">  
+  
+  <!-- All parameters passed from AutoUpdataAgent -->
+
+  <target name="uninstall">
+    <property name="dir.new.upgrade" value="${dir.new}${fs}${dir.upgrade}" />
+    <property name="dir.old.downgrade" value="${dir.old}${fs}${dir.downgrade}" />
+
+    <mkdir dir="${dir.cache}"/>
+    <move todir="${dir.cache}" preservelastmodified="true" >
+      <fileset dir="${dir.current}">
+        <present present="both" targetdir="${dir.new.upgrade}" />
+      </fileset>
+    </move>
+
+    <copy todir="${dir.current}" preservelastmodified="true">
+      <fileset dir="${dir.old.downgrade}">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <delete dir="${dir.cache}"/>
+
+    <antcall target="chmod-for-shell-scripts" inheritall="true" />
+
+    <antcall target="update-mac-backup-manager-info-plist" inheritall="true" />
+    
+  </target>
+
+  <target name="chmod-for-shell-scripts" if="flag.os.use.shell" depends="check-os-use-shell">
+    <chmod perm="ugo+rx" type="file">
+      <fileset dir="${dir.current}">
+        <include name="**/*.sh"/>
+      </fileset>
+    </chmod>
+  </target>
+
+  <target name="check-os-use-shell">
+    <condition property="flag.os.use.shell">
+      <or>
+        <os family="unix"/>
+        <os family="mac"/>
+        <os family="tandem"/>
+      </or>
+    </condition>
+  </target>
+
+  <target name="update-mac-backup-manager-info-plist" if="flag.os.use.app" depends="check-os-use-app">
+    <dirname property="dir.product.home" file="${basedir}"/>
+    <replace file="${dir.product.home}/BackupManager.app/Contents/Info.plist">
+      <replacefilter token="${dir.new}" value="${dir.old}"/>
+    </replace>
+  </target>
+
+  <target name="check-os-use-app">
+    <condition property="flag.os.use.app">
+      <os family="mac"/>
+    </condition>
+  </target>
+
+</project>

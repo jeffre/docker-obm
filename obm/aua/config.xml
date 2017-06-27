@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<auotupdate>
+  <product>
+    <name>obm</name>
+    <vendor></vendor>
+    <host-url></host-url>
+    <host-email></host-email>
+  </product>
+  <agent>
+    <home-dir path=".." />
+    <work-dir path="aua" />
+    <update interval="720" auto="true" show-gui="true" />
+    <download filepath="/obs/liveUpdate" filename="index.xml" auto="true" />
+    <install date="Update" retry="17" time="03:00" auto="true" />
+  </agent>
+  <network />
+</auotupdate>
+

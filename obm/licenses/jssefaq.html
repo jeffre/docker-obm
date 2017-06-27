@@ -1,0 +1,537 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<!--#config timefmt="%d-%b-%y" -->
+
+<!------------------------------->
+<!--      ABOUT THIS HTML      -->
+<!------------------------------->
+<!-- FOLLOW THESE COMMENTS FOR -->
+<!--   INFORMATION ABOUT THE   -->
+<!-- STRUCTURE OF OUR TEMPLATES-->
+<!------------------------------->
+
+<!------------------------------->
+<!--   INSERT YOUR TITLE HERE  -->
+<!------------BEGIN-TITLE-------->
+
+<TITLE> Java(TM) Secure Socket Extension -- Frequently Asked Questions</TITLE>
+
+<!-------------END-TITLE--------->
+<!--        END OF TITLE       -->
+<!------------------------------->
+
+<!------------------------------->
+<!-- MODIFY YOUR KEYWORDS HERE -->
+<!------------BEGIN-TITLE-------->
+
+<META NAME="keywords" CONTENT="Java(TM) Secure Socket Extension">
+
+<!-------------END-TITLE--------->
+<!--      END OF KEYWORDS      -->
+<!------------------------------->
+
+</HEAD>
+<BODY BGCOLOR="#FFFFFF"  TEXT="#000000">
+
+<!------------------------------->
+<!--EDIT THE PAGE HEADLINE HERE-->
+<!------------BEGIN-HEADLINE----->
+
+<H1>
+<CENTER>
+Java<SUP><FONT SIZE="-2">TM</FONT></SUP> Secure Socket Extension
+(JSSE) 1.0.3
+<br>
+Frequently Asked Questions
+</CENTER>
+</H1>
+
+
+<!-------------END-HEADLINE------>
+<!--    END OF PAGE HEADLINE   -->
+<!------------------------------->
+
+<!-- Begin Page Data -->
+
+<!------------------------------->
+<!--  EDIT PAGE CONTENT HERE   -->
+<!------------BEGIN-CONTENT------>
+
+<p>
+<br>
+<OL>
+<LI><A HREF="#1"> What does JSSE 1.0.3
+ do in simple terms?</A><BR>
+
+<LI><A HREF="#2">  What is new in JSSE 1.0.3 compared to JSSE 1.0.2?</A><BR>
+<LI><A HREF="#2a">  What is the difference between JSSE 1.0.3 and
+the JSSE found in the J2SDK version 1.4?</A><BR>
+<LI><A HREF="#3"> Where does JSSE fit in the Java<sup><font size=-2>TM</font></sup>  Security Architecture?</A><BR>
+<LI><A HREF="#4"> Why should I be interested in JSSE APIs, JSSE 1.0.3 and commercial versions
+                   of JSSE?</A><BR>
+<LI><A HREF="#5"> Is the Java<sup><font size=-2>TM</font></sup> Secure Socket Extension a reference implementation of the specification or a commercial product?</A><BR>
+<LI><A HREF="#6"> What is the cost of JSSE 1.0.3?</A><BR>
+<LI><A HREF="#6a"> What is the U.S. Department of Commerce Bureau of Export Affairs classification of JSSE 1.0.3?</A><BR>
+<LI><A HREF="#7"> I read that the US Government has relaxed the export restrictions on encryption products. 
+                   Can the JSSE 1.0.3 reference implementation be downloaded by any organization, anywhere?</A><BR>
+<LI><A HREF="#8"> Now that the export requirements have been relaxed, can I download the JSSE 1.0.3 reference implementation if I'm in a 
+                   country that has been subject to a US Government embargo?</A><BR>
+<LI><A HREF="#9"> I'm located in the US or Canada.  What encryption strength products can I download?</A><BR>
+<LI><A HREF="#10"> I'm located outside of the US and Canada.  What encryption strength products can I download?</A><BR>
+<LI><A HREF="#10a"> Since both the domestic and global version of JSSE 1.0.3 have strong encryption, why do you have two versions?</A><BR>
+<LI><A HREF="#11"> What versions of the JDK<sup><font size=-2>TM</font></sup> does JSSE 1.0.3 support?</A><BR>
+<LI><A HREF="#14"> Does the reference implementation have the ability to do RSA encryption?</A><BR>
+<LI><A HREF="#12"> What standard(s) does JSSE 1.0.3  follow?</A><BR>
+
+<LI><A HREF="#15"> What versions of SSL are supported?  What versions
+of TLS are supported?</A><BR>
+<LI><A HREF="#16"> Is the reference implementation of JSSE written in the
+                  Java<sup><font size=-2>TM</font></sup> programming language? </A><BR>
+
+<LI><A HREF="#13a"> Is there any sample source code available?</A><BR>
+<LI><A HREF="#17"> Something is not working. How can I debug what is going wrong?</A><BR>
+<LI><A HREF="#18"> It seems the first SSL connection takes longer than subsequent connections. Is there anything I can do to improve the performance of
+                  the first connection?</A><BR>
+
+<LI><A HREF="#19"> What troubleshooting tips can you provide?</A><BR>
+</P>
+
+</OL>
+<P>
+<FONT SIZE="+1"><STRONG> Questions and Answers</STRONG></FONT><p>
+</P>
+<P>
+
+<OL>
+<LI><A NAME="1"><strong>Q:</strong> What does JSSE 1.0.3 do in simple terms?</A>
+<P>
+	<strong>A:</strong> JSSE implements a Java<sup><font size=-2>TM</font></sup> version of SSL (Secure Sockets Layer) and TLS
+(Transport Layer Security)  protocols to provide for secure Internet
+communications.
+<p>
+
+<P>Using JSSE, developers can provide for the passage of secure data between a
+client and a server running any application protocol (such as HTTP, Telnet,
+NNTP, and FTP) over TCP/IP. JSSE will enable data encryption, server
+authentication, message integrity, and optional client authentication for a
+TCP/IP connection.</P>
+
+<p>
+<LI><A NAME="2"><strong>Q:</strong> What is new in JSSE 1.0.3 compared to JSSE 1.0.2?
+<P>
+
+	<strong>A:</strong>  There were a number of bug fixes and
+	enhancements.  For more details, please see the CHANGES.txt
+	file that comes with the distribution.  <p>
+
+<LI><A NAME="2a"><strong>Q:</strong> What is the difference between
+JSSE 1.0.3 and the JSSE found in Sun's J2SDK version 1.4?</A><BR> <br>
+
+	<strong>A:</strong>The <A HREF="http://java.sun.com/j2se/1.4">
+	J2SDK version 1.4 </A> bundles JSSE into the J2SDK framework.
+	The code for the J2SDK v1.4 JSSE was based on JSSE 1.0.2, but
+	contains some API enhancements and bug fixes.  Code written
+	using JSSE 1.0.x should work on the J2SDK v1.4, but code
+	written using API's exclusive to J2SDK v1.4 will not work in
+	JSSE 1.0.3.
+
+<p>
+<LI><A NAME="3"><strong>Q:</strong>
+	Where does JSSE fit in the Java<sup><font size=-2>TM</font></sup> Security Architecture?
+<P>
+	<strong>A:</strong>
+	JSSE is the latest development in the
+	Java<sup><font size=-2>TM</font></sup> Security Architecture,
+	building upon the Java<sup><font size=-2>TM</font></sup> 2 Security Architecture in the core SDK,
+	the Java<sup><font size=-2>TM</font></sup>
+	Cryptography Extension (JCE), the Java<sup><font size=-2>TM</font></sup>
+	Authentication and Authorization Service (JAAS),
+	and the Java<sup><font size=-2>TM</font></sup> Security Tools.
+        See the <a href="http://java.sun.com/products/jdk/1.2/docs/guide/security/index.html">Java<sup><font size=-2>TM</font></sup> 2  Security Architecture document</a> for more information.
+<p>
+
+<LI><A NAME="4"><strong>Q:</strong>
+	Why should I be interested in JSSE APIs, JSSE 1.0.3 and commercial versions
+of JSSE?
+<P>
+	<strong>A:</strong>
+	JSSE enables developers to utilize secure, encrypted communications
+channels in their applications.  It simplifies application development by
+serving as a   building block which developers can integrate directly into
+their applications.  Furthermore, by abstracting the complex underlying
+security algorithms and &quot;handshaking&quot; mechanisms, JSSE  minimizes
+the risk of creating subtle but dangerous security vulnerabilities.  
+<p>
+<LI><A NAME="5"><strong>Q:</strong>
+	Is the Java<sup><font size=-2>TM</font></sup> Secure Socket Extension a reference
+implementation of the specification or a commercial product? 
+<P>
+	<strong>A:</strong>
+	Sun's Java<sup><font size=-2>TM</font></sup>  Secure Socket Extension 1.0.3 implementation is a reference
+implementation. It is intended to familiarize developers with the APIs and the
+technology before they make a choice on commercial implementations.
+ A reference implementation is similar to a proof-of-concept
+implementation of a specification.  It is used to demonstrate that
+the specification is implementable and that various compatibility
+tests can be written against it.
+<p>
+A non-commercial implementation typically lacks the overall completeness of a commercial-grade product. While the implementation meets the API specification, it will be lacking things such as a fully-featured toolkit, sophisticated debugging tools, commercial-grade documentation and  regular maintenance updates.
+<p>
+
+<LI><A NAME="6"><strong>Q:</strong>
+	What is the cost of JSSE 1.0.3?
+<P>
+	<strong>A:</strong>
+	The JSSE 1.0.3 reference implementation
+	binary code is free for commercial use and redistribution. See the
+license and the legal documents that are downloaded with the code.  
+
+<p>
+
+<LI><A NAME="6a"><strong>Q:</strong>
+What is the U.S. Department of Commerce Bureau of Export Affairs classification of JSSE 1.0.3?
+
+<p>
+
+<strong>A:</strong>
+
+JSSE 1.0.3 has been classified as an ENC/Retail product by the U.S.
+Department of Commerce Bureau of Export Affairs. This license exception
+means that JSSE may be freely exported, without any additional
+approval, with strong encryption, to all nations 
+<A HREF="#8"> except for those specifically denied </A>.
+
+<p>
+
+<LI><A NAME="7"><strong>Q:</strong> I read that the US Government has relaxed the export restrictions on encryption products. Can the JSSE 1.0.3 reference implementation be downloaded by any organization, anywhere?
+<P>
+
+<strong>A:</strong> While there has been some relaxation in the export
+requirements, there are many restrictions still in place for strong
+encryption products.  Go to <a
+href="http://www.epic.org/crypto/export_controls/regs_1_00.html">
+http://www.epic.org/crypto/export_controls/regs_1_00.html</a> for the
+complete 33 page report.  In addition, some countries may have import
+restrictions.  Note also that a vendor's product status is dependent on
+the type of application they have with the US government -- JSSE 1.0.3
+has been classified as ENC/Retail. Contrary to some articles in the
+press, export of encryption technology is still a complicated,
+multi-dimensional issue.  You are advised to consult your export/import
+control counsel or attorney to determine the exact requirements.
+
+<p>
+
+<LI><A NAME="8"><strong>Q:</strong> Now that the export requirements have been relaxed, can I download the JSSE 1.0.3 reference implementation if I'm in a country that has been subject to a US Government embargo?
+<P>
+	<strong>A:</strong> No.  Even with an ENC/Retail classification, the countries on the US Government embargo list may not receive <STRONG> ANY </STRONG> US-developed encryption items.  In addition, parties listed on the <a href="http://bxa.fedworld.gov/prohib.html">  Denied and Restricted Parties List</a>
+are also not allowed to receive this kind of software.  Additionally, it is Sun company policy to not ship products to Burma.
+
+
+<p>
+
+<LI><A NAME="9"><strong>Q:</strong> I'm located in the US or Canada.  What encryption strength products can I download?
+<P>
+	<strong>A:</strong> If you are located in the US or Canada, you can download the 128 bit strength domestic JSSE 1.0.3 reference implementation. 
+
+<p>
+
+
+
+<LI><A NAME="10"><strong>Q:</strong> I'm located outside of the US and Canada.  What encryption strength products can I download?
+<P>
+
+<strong>A:</strong>  If you are located outside of the US or Canada,
+you can download the 128 bit strength global JSSE 1.0.3 reference
+implementation.  (This assumes you are not <A HREF="#8"> an embargoed
+nation or a denied party.) </A>
+
+<p>
+
+<LI><A NAME="10a"><strong>Q:</strong> Since both the domestic and global version of JSSE 1.0.3 have strong encryption, why do you have two versions?
+<P>
+	<strong>A:</strong>  There are two versions to comply with the approved application Sun received from the U.S. Department of Commerce Bureau of Export Affairs. The domestic version supports alternate SSL security 
+providers; the global version supports only the Sun SSL provider.
+
+
+<p>
+<LI><A NAME="11"><strong>Q:</strong>
+	What versions of the JDK<sup><font size=-2>TM</font></sup> 
+	does JSSE 1.0.3 support? 
+<P>
+        <strong>A:</strong>
+Sun's reference implementation supports Java<sup><font size=-2>TM</font></sup> 2 SDK, Standard Edition, version 1.2.x or 1.3.x.   The JSSE API is implementable on either JDK 1.1.x or Java<sup><font size=-2>TM</font></sup> 2 Platform, Standard Edition.  This implementation is <STRONG> not </STRONG> intended for use in the J2SDK version 1.4, which has a version of JSSE already bundled.
+</P>
+
+<p>
+
+<LI><A NAME="14"><strong>Q:</strong>
+	Does the reference implementation have the ability to do RSA encryption?
+<P>
+        <strong>A:</strong>
+	Yes, JSSE 1.0.3 contains RSA encryption.  However, this
+algorithm is not available to the applications using
+the Java <sup><font size=-2>TM</font></sup> Cryptography Extension (JCE) API.
+
+<p>
+<LI><A NAME="12"><strong>Q:</strong>
+
+	What standard(s) does JSSE 1.0.3 follow?
+<P>
+        <strong>A:</strong>
+	JSSE 1.0.3 provides  Secure Sockets Layer (SSL) v3  and
+Transport Layer Security (TLS) 1.0 support to the  Java<sup><font size=-2>TM</font></sup> 2 Platform.
+
+<p>
+
+<LI><A NAME="15"><strong>Q:</strong>
+	What versions of SSL are supported?  What versions of
+	TLS are supported?
+<P>
+        <strong>A:</strong>
+	JSSE 1.0.3 supports SSL version 3. It is widely available and generally believed to be more secure than version 2. SSL was originally developed by Netscape.  You can find out more about SSL by looking at <a href="http://developer.netscape.com/docs/manuals/security.html#SS"> Netscape SSL information</a> or the <a href="http://home.netscape.com/eng/ssl3/ssl-toc.html">  SSL 3.0 Protocol Internet Draft</A>.  JSSE 1.0.3 supports TLS version 1, which can
+be found at
+<A HREF="http://www.ietf.org/rfc/rfc2246.txt?number=2246">
+http://www.ietf.org/rfc/rfc2246.txt?number=2246
+</A>.
+<p>
+
+<LI><A NAME="16"><strong>Q:</strong>
+	Is the reference implementation of JSSE written in the
+        Java<sup><font size=-2>TM</font></sup> programming language? 
+<P>
+        <strong>A:</strong>
+	Yes, the reference implementation is completely written in the Java<sup><font size=-2>TM</font></sup> 
+	programming language. 
+
+<p>
+
+
+<LI><A NAME="13a"><strong>Q:</strong>
+	Is there any sample source code available?
+<P>
+        <strong>A:</strong>
+	Sample source code, including directions for running the sample
+	code, is provided with the JSSE 1.0.3 distribution as a separate bundle.
+
+<p>
+<p>
+<LI><A NAME="17"><strong>Q:</strong>
+	Something is not working. How can I debug what is going wrong? 
+<P>
+        <strong>A:</strong>
+
+
+Use the dynamic debug tracing support. This is similar to 
+ that used for debugging access control failures in Java<sup><font size=-2>TM</font></sup>  2.
+ You can configure this via the javax.net.debug system 
+ property. A value of "help" will dump out the various
+ options. For example: <br> <br>
+
+<code> java -Djavax.net.debug=help SomeClass  </code>
+ 
+
+<p>
+
+
+<LI><A NAME="18"><strong>Q:</strong>
+	It seems the first SSL connection takes longer than subsequent 
+connections. Is there anything I can do to improve the performance of
+the first connection? 
+<P>
+        <strong>A:</strong>
+	The SSLContext needs a java.security.SecureRandom object. It is
+expensive to seed a SecureRandom object. You should see better
+performance for the first connection if you can provide a pre-seeded
+SecureRandom object when initializing the SSLContext.  However, extreme
+care should be taken in such action as seeding is an important aspect
+of cryptographic effectiveness.
+
+<p> 
+
+<LI><A NAME="19"><strong>Q:</strong>
+	What troubleshooting tips can you provide? 
+<P>
+       
+        <strong>A:</strong>
+	Troubleshooting Tips:	
+
+<blockquote>
+
+<a name="PkgNotFound"></a>
+<H4>JSSE Package Not Found During Compilation</H4>
+
+<blockquote>
+
+<P> <b>Problem</b>: When compiling a program that uses the JSSE 1.0.3
+packages, one of the following errors occur:
+
+<pre>
+    Package com.sun.net.ssl not found in import.
+
+    Package javax.net not found in import.
+
+    Package javax.net.ssl not found in import.
+
+    Package javax.security.cert not found in import.
+</pre>
+
+<P> <b>Cause</b>: The JSSE JAR files are not installed properly.
+
+<P> <b>Solution</b>: JSSE 1.0.3 is supplied as an extension to the Java
+2 platform. Its JAR files can be installed either as "installed"
+extensions (recommended) or as "bundled" extensions.  A JAR file is
+considered an "installed" extension if it is stored in a particular
+directory established for all installed extensions, as described in <a
+href="http://java.sun.com/products/jsse/install.html">
+http://java.sun.com/products/jsse/install.html</a>, and no class path
+modifications are needed.  "Bundled" extensions may be bundled with
+applications or made available in a separate directory. If they are
+bundled with an application, be sure to specify them in the Class-Path
+attribute in the application's manifest file. Otherwise, be sure to set
+the Java <code>CLASSPATH</code> variable correctly so the JSSE JAR
+files can be found.  For more information about bundled extensions, see
+<a href=
+"http://java.sun.com/products/jdk/1.2/docs/guide/extensions/spec.html#bundled">
+Bundled Extensions</a>.
+
+</blockquote>
+
+
+<H4>Runtime Exception: SSL Service Not Available</H4>
+
+<blockquote>
+
+<P> <b>Problem</b>: When running a program that uses JSSE 1.0.3, an
+exception occurs indicating that an SSL service is not available.
+For example, an exception similar to one of the following occurs:
+
+<pre>
+    Exception in thread "main"
+        java.net.SocketException: no SSL Server Sockets
+
+    Exception in thread "main":
+        SSL implementation not available
+</pre>
+
+<P> <b>Cause 1</b>: The cryptographic service provider is not registered
+properly.
+
+<P> <b>Solution 1</b>: Before using JSSE 1.0.3, you must register the
+<code>SunJSSE</code> provider, either statically by modifying the
+<code>java.security</code> file or dynamically by calling the
+<code>Security.addProvider</code> method, as described in
+<a href="http://java.sun.com/products/jsse/install.html">
+http://java.sun.com/products/jsse/install.html</a>.
+
+<P> <b>Cause 2</b>: There was a problem with <code>SSLContext</code>
+initialization, for example due to a corrupted keystore. (Note: One
+vendor has shipped a keystore in an unknown format, and that may cause
+this type of error.)
+
+<P> <b>Solution 2</b>: Check initialization parameters. Ensure any
+keystores specified are valid (e.g., by trying to use the
+<a href="http://java.sun.com/j2se/1.3/docs/tooldocs/tools.html#security">
+keytool</a> to examine them).
+
+</blockquote>
+
+
+<H4> Runtime Exception:  untrusted cert chains </H4>
+
+<blockquote>
+
+<P> <b>Problem</b>: When negotiating an SSL connection, the client or server
+throws one of the following exceptions:
+
+<pre>
+    javax.net.ssl.SSLException: untrusted server cert chain
+    javax.net.ssl.SSLException: untrusted client cert chain
+</pre>
+
+<P> <b>Cause 1</b>: This is generally caused by the remote side sending a
+certificate that is unknown to the local side.
+
+<P> <b>Solution 1</b>: The best way to
+debug this type of problem is to turn on debugging and watch
+as certificates are loaded and when certificates are
+received via the network connection.  Most likely, the
+received certificate is unknown to the trust mechanism because
+the wrong trust file was loaded.
+
+<P> <b>Cause 2</b>: The system clock is not set correctly.
+<P> <b>Solution 2</b>: If the clock is not set correctly, the perceived
+time may be outside the validity period on one of the certificates,
+and unless the certificate can be replaced with a valid one from a
+truststore, the system must assume that the certificate is invalid,
+and therefore throw the exception.
+
+<P> <b>Cause 3</b>: Older versions of Java 2 Enterprise Edition use
+earlier versions of JSSE.  In particular, some previous versions of J2EE
+shipped with JSSE 1.0, which couldn't replace received expired
+certificates with current ones from a truststore.
+<P> <b>Solution 3</b>: Be sure that the new JSSE jar files occur
+in the class path(s) ahead of any older J2EE jar files.
+
+</blockquote>
+
+
+<H4>Runtime Exception: Class Definition Not Found</H4>
+
+<blockquote>
+
+<P> <b>Problem</b>: When running a program that uses JSSE 1.0.3, an
+exception occurs indicating that a JSSE class definition cannot
+be found. For example, an exception similar to the following occurs:
+
+<pre>
+    Exception in thread "main" java.lang.NoClassDefFoundError:
+        javax/net/ssl/SSLServerSocketFactory
+</pre>
+
+<P> <b>Cause</b>: The JSSE JAR files are not installed properly.
+
+<P> <b>Solution</b>: JSSE must be installed as an extension to the Java
+2 Platform. Install the JSSE JAR files as discussed in the Solution to
+the <a href="#PkgNotFound">JSSE Package Not Found During Compilation</a>
+problem shown above.
+
+</blockquote>
+
+
+<H4>Runtime Exception: No Cipher Suites in Common</H4>
+
+<blockquote>
+
+<P> <b>Problem</b>: When using Netscape Navigator or Microsoft
+Internet Explorer (IE) to access files on a server that only has
+DSA-based certificates, a runtime exception occurs indicating
+that there are no cipher suites in common.
+
+<P> <b>Cause</b>: By default, certificates created with keytool use
+DSA public keys. Navigator and IE do not use DSA public
+keys in their enabled cipher suites.
+
+<P> <b>Solution</b>: To interact with Navigator or IE, you should create
+certificates that use RSA-based keys. To do this, you need to specify
+the <code>-keyalg</code> RSA option when using keytool. For
+example:
+
+<pre>
+    keytool -genkey -alias duke -keystore testkeys -keyalg rsa
+</pre>
+
+</OL>
+
+<p>
+
+<!-------------------------------------------------------------------
+
+<!-------------END-CONTENT------->
+<!--     END OF PAGE DATA      -->
+<!------------------------------->
+
+<!-- End Page Data -->
+
+</BODY>
+</HTML>

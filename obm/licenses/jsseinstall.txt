@@ -1,0 +1,199 @@
+                 Java(tm) Secure Socket Extension 1.0.3_02
+
+                       Installation Instructions
+
+
+-----------------------------------------------------------------------
+Installation
+-----------------------------------------------------------------------
+
+JSSE 1.0.3_02 is supplied as an extension to the Java 2 platform.  JSSE is
+implemented via a Java Cryptography Architecture (JCA) security
+provider class called "SunJSSE."
+
+Note:
+
+	(Windows and Solaris use different pathname separators, so
+	please use the appropriate one ("\", "/") for your
+	environment.)
+
+	<java-home> refers to the directory where the Java 2 Runtime
+	Environment (JRE) was installed.  The Java 2 SDK (aka JDK)
+	contains the JRE, but at a different level in the file
+	hierarchy.  For example, if the Java 2 SDK or JRE was installed
+	in /home/user1, <java-home>  would be:
+
+		/home/user1/jre1.2.x			[JRE]
+		/home/user1/jdk1.2.x/jre		[SDK]
+
+1)  Download JSSE 1.0.3_02.
+
+	You can save the downloaded file anywhere on your local disk.
+	Note that JSSE 1.0.3_02 requires that you have Java(tm) 2 SDK v
+	1.2.x or 1.3.x already installed.  This release will not work
+	on Java(tm) 2 Runtime Environment v 1.4.x or greater.
+
+2)  Uncompress and extract the downloaded file.
+
+	This will create a directory named jsse1.0.3_02, with two
+	subdirectories named doc and lib.
+
+3)  Install the JSSE jar files.
+
+	The JSSE lib subdirectory contains the extension files jsse.jar,
+	jcert.jar, and jnet.jar.  You can either install these files in
+	the JDK/JRE ("installed extension") or bundle them with your
+	applet or application ("bundled extension").  If you
+	wish to install them as an installed extension, place
+	them in the following directory:
+
+		<java-home>/lib/ext
+
+4)  Register the SunJSSE provider.
+
+	JSSE 1.0.3_02 comes standard with a Cryptographic Service Provider,
+	or "provider" for short, named "SunJSSE".  Although the "SunJSSE"
+	provider is supplied with every JSSE 1.0.3_02 installation, it still
+	needs to be configured explicitly, either statically or
+	dynamically, before its services can be accessed.
+
+4a)  Static registration of SunJSSE provider.
+
+	Add the "SunJSSE" provider to your list of approved providers.
+	This is done statically by editing the security properties file:
+
+		<java-home>\lib\security\java.security [Win32]
+		<java-home>/lib/security/java.security [Solaris]
+
+	One of the types of properties contained in the java.security
+	file is of the following form:
+
+		security.provider.n=providerClassName
+
+	This declares a provider, and specifies its preference order "n".
+	The preference order is the order in which providers are
+	searched for requested algorithms (when no specific provider is
+	requested).  The order is 1-based; 1 is the most preferred,
+	followed by 2, and so on.
+
+	Add the above line to java.security, replacing
+	providerClassName with com.sun.net.ssl.internal.ssl.Provider,
+	and substituting n with the priority that you would like to
+	assign to the "SunJSSE" provider.  For example, to add the Sun
+	internal SSL provider to the standard provider shipped with the
+	JRE, your entries would look like: <br>
+
+		security.provider.1=sun.security.provider.Sun
+		security.provider.2=com.sun.net.ssl.internal.ssl.Provider
+
+	"SunJSSE" would now be the second preferred provider
+
+4b)  Dynamic registration of SunJSSE provider.
+
+	Instead of registering the provider statically, you can add the
+	provider dynamically at runtime by adding the following lines
+	of code at the beginning of your program:
+
+		Security.addProvider(
+			new com.sun.net.ssl.internal.ssl.Provider());
+
+	Dynamically adding a provider requires that the application have the
+	appropriate permission.
+
+5)  Install a JSSE-specific cacerts file, if desired.
+
+	When creating a default TrustManager, Sun's JSSE implementation
+	will first check for alternate cacert files before falling
+	back on the standard cacerts file, so that you can provide a
+	JSSE-specific set of trusted root certificates separate from
+	ones that might be present in cacerts for code signing
+	purposes.
+
+	The search order for locating the default trustStore file is:
+
+	1)  The file specified by javax.net.ssl.trustStore,
+		see 5a) below, then
+	2)  <java-home>/lib/security/jssecacerts, then
+	3)  <java-home>/lib/security/cacerts.
+
+	The first element to be found will be used as the trust store,
+	and successive elements will not be consulted.
+
+5a) Overriding the KeyManager/TrustManager keystore default locations.
+
+	In this JSSE implementation, the default keystore locations can
+	be overriden by specifying the appropriate system properties:
+
+	javax.net.ssl.keyStore
+		specifies the location of where to find key material
+		for the default KeyManager.  There is no default
+		location.
+	javax.net.ssl.keyStoreType
+		specifies the KeyStore file type for key material for
+		the default KeyManager.  The default is
+		the default keystore type.  (e.g. KeyStore.getDefaultType())
+	javax.net.ssl.keyStorePassword
+		specifies the password to be used with this KeyStore.
+
+	javax.net.ssl.trustStore
+		specifies the location of where to find key material
+		for the default TrustManager.  If specified, this
+		overrides jssecacerts and cacerts.
+	javax.net.ssl.trustStoreType
+		specifies the KeyStore file type for key material for
+		the default TrustManager.  The default is
+		the default KeyStore type.  (e.g. KeyStore.getDefaultType())
+	javax.net.ssl.trustStorePassword
+		specifies the password to be used with this KeyStore.
+
+	Note:  javax.net.ssl.keyStorePassword and
+	javax.net.ssl.trustStorePassword are not removed from the
+	System properties after the default SSLContext and default
+	TrustManagerFactory are initialized.  You should remove these
+	properties when you no longer need them so that they are not
+	available.
+
+6)  HTTPS Support
+
+	The JSSE reference implementation contains a URL handler for
+	the "https" URL protocol type.  In order to use this handler,
+	you must add the handler's implementation package name to the
+	list of packages which are searched by the java URL class.
+	This is configured via the "java.protocol.handler.pkgs" system
+	property.  See the java.net.URL class documentation for
+	details.  System properties can be set via the command line or
+	at runtime through the java.lang.System class.
+
+	For example, you can set this property on the command line via:
+
+		java -Djava.protocol.handler.pkgs=\
+			com.sun.net.ssl.internal.www.protocol
+
+	When accessing HTTPS servers through a web proxy, you must set the
+	"https.proxyHost" and "https.proxyPort" system properties to the
+	correct host name and port number of the web proxy.
+
+	For example, to set this property on the command line to access HTTPS
+	servers through the proxy host "webproxy" running at port 8080 you
+	would use:
+
+		java -Dhttps.proxyHost=webproxy -Dhttps.proxyPort=8080
+
+7)  Debugging JSSE
+
+	By setting the System property "javax.net.debug", this JSSE
+	implementation can provide very useful and detailed debug
+	information for the various phases of SSL/TLS handshaking.
+
+	For a list of the current options, please run:
+
+		java -Djavax.net.debug=help MyApp
+
+	MyApp will exit after printing the debug help information.
+
+	EXAMPLE:
+
+		java -Djavax.net.debug=ssl,handshake,data,trustmanager MyApp
+
+	This option is currently unsupported, and is provided for your
+	convenience only.

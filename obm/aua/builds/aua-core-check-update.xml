@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-core-check-update" default="check-update">
+
+  <!-- Properties File Name -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <!-- All data path parameters passed from AutoUpdataAgent -->
+  <target name="check-update" depends="check-local-machine-properties">
+
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <taskdef name="auaget" classname="${aua.classname.get.file}" classpath="${aua.file.work.lib.aua.jar}"/>
+    <!-- 2-Aug-2011 : 3612 : (angela.cheung) New download url for the file index.xml -->
+    <!-- auaget protocol="${network.protocol}" host="${host.url}" path="${index.filepath}/${index.filename}" -->
+    <auaget protocol="${network.protocol}" host="${host.url}" path="${index.filepath}"
+            subadminhost="${subadmin.host}" dest="${index.filename}"
+            proxytype="${proxy.type}" proxyhost="${proxy.host}" proxyport="${proxy.port}"
+            proxyusername="${proxy.username}" proxypassword="${proxy.password}"
+            username="${auth.username}" password="${auth.password}"
+            productid="${prod.id}" productversion="${current.prod.version}" javaversion="${java.version}" auaversion="${current.aua.version}" />
+  </target>
+
+  <target name="check-local-machine-properties" >
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <ant antfile="${dir.antfile}${fs}aua-check-properties.xml" dir="${dir.antfile}"/>
+  </target>
+
+</project>

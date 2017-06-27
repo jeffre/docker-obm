@@ -1,0 +1,12 @@
+﻿사용 조건
+1. Ahsay Systems Corporation에 의해 제공된 모든 소프트웨어는 어떤 종류의 보증 없이 있는 그대로 제공되고, Ahsay Systems Corporation는 소프트웨어의 사용으로부터 발생하는 어떤 종류의 손해에 대해서 책임지지 않습니다. 또한 이용자는 모든 보증, 제한이 없는 것을 포함한 명시적이고 암묵적인 거래상의 모든 암묵적인 보증이나 어떤 특정 목적에 관한 적합성에 관하여 요구하지 않습니다.
+2. Ahsay Systems Corporation는 이용자가 오직 개인적 용도를 위해 Ahsay Systems Corporation가 제공하는 소프트웨어의 바이너리 폼을 이용할 수 있는, 비독점적이고, 양도 불가능하며, 로열티 없는, 제한된 라이선스를 양도합니다.  Ahsay Systems Corporation가 소유한 프로그램의 재배포는 Ahsay Systems Corporation에 의한 명시적인 승인 없이는 엄격하게 제한됩니다.
+3. 텍스트, 그래픽, 로그, 버튼아이콘, 이미지 및 소프트웨어 등 이 사이트에 포함되는 모든 컨텐츠는 Ahsay Systems Corporation 혹은 그 컨텐츠 제공자의 자산이고, 국제 저작권법에 의해 보호받습니다.  이 사이트에서 사용되는 모든 프로그램은 Ahsay Systems Corporation 혹은 그 소프트웨어 공급자의 자산이며, 국내 저작권법에 의해 보호받습니다. 프로그램의 역엔지니어링, 분해, 디컴파일 등의 시도는, 명시적으로 허용하지 않는 한, 법에 의해 금지됩니다.
+4. Ahsay Systems Corporation는 이메일 혹은 우편을 통해 공지사항이 전달됩니다. Ahsay Systems Corporation는 또한 약관 등의 변경과 관련된 내용은, 일반적으로 Ahsay Systems Corporation가 제공하는 서비스 상에서, 공지 노출 혹은 해당 공지의 링크를 통해 공지됩니다.
+5. Ahsay Systems Corporation는 귀하의 온라인 커뮤니케이션을 모니터할 의도를 갖고 있지 않지만, Ahsay Systems Corporation는 컨텐츠가 일반 공중에게 해롭거나 공격적인 경우 편집 혹은 삭제할 권한을 갖습니다. 본 규정의 위반이 반복될 경우, 귀하의 계정이 해지 혹은 중단될 수 있습니다.
+6. 메시지 전달 매체로서 적절한 이메일을 사용할 경우  본 시스템은 정상적으로 수행됩니다. 직접적 혹은 간접적으로 스팸 도구 혹은 기타 의도된 것 이외의 용도로 이메일 시스템을 사용하는 것은 금지됩니다.
+7. "Ahsay Systems Corporation" 는 특정 시각 혹은 특정 시간 동안, 임시 혹은 영구적으로, 공지 여부와 무관하게, 서비스(혹은 그 일부)의 수정 및 중단할 권리를 갖습니다.
+8. 이용자는 Ahsay Systems Corporation에 의해 제공되는 서비스를, 상기에서 다루지 않았거나 제한하지 않은, 네트웍 계정, 사이트 혹은 국가의 보안을 위협하는 시도를 포함한 어떤 종류의 불법적인 행위를 해서는 안됩니다. Ahsay Systems Corporation가 이러한 행위를 인지하게 된 경우, 적절한 법적인 절차가 수행될 것입니다.
+9. Ahsay Systems Corporation는 간접적이고, 특별하며, 우발적이거나 필연적으로 발생하는 손해 (비즈니스의 손실, 수익의 손실, 백업 데이터의 손실 등과 같은 손해를 포함)에 대해, 그것이 계약 위반, 과실을 포함한 불법, 제품 과실 등에 기인한 것인지와 무관하게, Ahsay Systems Corporation나 그 대표가 이러한 손상의 가능성에 대해 조언을 받았고 여기의 해결방법이 근본 목적에 부합되지 않았더라도, 책임지지 않습니다.
+10. 이용자는 암호화키를 알고 있고, 암호화키를 안전한 장소에 보관할 책임을 가진 유일한 주체입니다. Ahsay Systems Corporation는 백업 데이터를 복원하지 못하거나, 기밀 정보가 유출되는 것을 포함한, 이 암호화키의 불실, 변조, 방치 등으로 인한 모든 손상에 대해 책임지지 않습니다.
+Ahsay Systems Corporation respects your privacy. We assure you that we do not collect personal information from you unless you provide it to us. However, we may collect and analyse system information from your machine for customer support, troubleshooting, debugging and other software development purposes. In no circumstances shall Ahsay Systems Corporation sell or provide any of these information to any other third parties.

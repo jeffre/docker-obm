@@ -1,0 +1,77 @@
+
+
+
+
+
+JavaTM Secure Socket Extension (JSSE) 1.0.3
+
+
+Copyright Notice
+
+English:
+
+Copyright © 2003 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, California 95054, U.S.A. All rights reserved.
+
+Sun Microsystems, Inc.  has intellectual property rights relating to technology
+embodied in the product that is described in this document.
+
+In particular, and without limitation, these intellectual property rights may
+include one or more of the U.S.  patents listed at http://www.sun.com/patents
+and one or more additional patents or pending patent applications in the U.S.
+and in other countries.
+
+This document and the product to which it pertains are distributed under
+licenses restricting their use, copying, distribution, and decompilation.  No
+part of the product or of this document may be reproduced in any form by any
+means without prior written authorization of Sun and its licensors, if any.
+
+Third-party software, including font technology, is copyrighted and licensed
+from Sun suppliers.  The Java Secure Socket Extension (JSSE) product includes
+code licensed from RSA Data Security.
+
+Sun, Sun Microsystems, the Sun logo, Java and Java Secure Socket Extension are
+trademarks or registered trademarks of Sun Microsystems, Inc.  in the U.S.  and
+other countries.
+
+DOCUMENTATION IS PROVIDED "AS IS" AND ALL EXPRESS OR IMPLIED CONDITIONS,
+REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF
+MERCHANTABILITY, FITNESS FOR FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE
+DISCLAIMED, EXCEPT TO THE EXTENT THAT SUCH DISCLAIMERS ARE HELD TO BE LEGALLY
+INVALID.
+
+Federal Acquisitions:  Commercial Software - Government Users Subject to
+Standard License Terms and Conditions.
+
+
+
+French:
+
+Copyright © 2003 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, California 95054, Etats-Unis.  Tous droits rservs.
+
+Sun Microsystems, Inc.  a les droits de proprit intellectuels relatants la
+technologie incorpore dans le produit qui est dcrit dans ce document.  En
+particulier, et sans la limitation, ces droits de proprit intellectuels peuvent
+inclure un ou plus des brevets amricains numrs http://www.sun.com/patents et un
+ou les brevets plus supplmentaires ou les applications de brevet en attente dans
+les Etats - Unis et dans les autres pays.
+
+Ce produit ou document est protg par un copyright et distribu avec des licences
+qui en restreignent l'utilisation, la copie, la distribution, et la
+dcompilation.  Aucune partie de ce produit ou document ne peut tre reproduite
+sous aucune forme, parquelque moyen que ce soit, sans l'autorisation pralable et
+crite de Sun et de ses bailleurs de licence, s'il y ena.
+
+Le logiciel dtenu par des tiers, et qui comprend la technologie relative aux
+polices de caractres, est protg par un copyright et licenci par des fournisseurs
+de Sun.  Le produit Java Secure Socket Extension (JSSE) comprend le logiciel
+licenci par RSA Data Security.
+
+Sun, Sun Microsystems, le logo Sun, Java et Java Secure Socket Extension sont
+des marques de fabrique ou des marques dposes de Sun Microsystems, Inc.  aux
+Etats-Unis et dans d'autres pays.
+
+LA DOCUMENTATION EST FOURNIE "EN L'TAT" ET TOUTES AUTRES CONDITIONS,
+DECLARATIONS ET GARANTIES EXPRESSES OU TACITES SONT FORMELLEMENT EXCLUES, DANS
+LA MESURE AUTORISEE PAR LA LOI APPLICABLE, Y COMPRIS NOTAMMENT TOUTE GARANTIE
+IMPLICITE RELATIVE A LA QUALITE MARCHANDE, A L'APTITUDE A UNE UTILISATION
+PARTICULIERE OU A L'ABSENCE DE CONTREFAON.

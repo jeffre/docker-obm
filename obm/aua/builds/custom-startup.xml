@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="custom-startup" default="custom-startup">
+
+  <!-- Properties File Name -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <!-- Main Procedure -->
+  <target name="custom-startup" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <property name="executable.win.service.command" value="Service.exe" />
+    <antcall inheritall="true" target="ant-startup-obcs"/>
+    <antcall inheritall="true" target="ant-startup-cdp"/>
+    <antcall inheritall="true" target="ant-startup-systemtray"/>
+  </target>
+
+  <!-- Check and Load properties file -->
+  <target name="check-local-machine-properties"
+          unless="flag.local.machine.properties.file.exists"
+          depends="check-properties-file-exists">
+    <ant antfile="aua-check-properties.xml"/>
+  </target>
+
+  <target name="check-properties-file-exists">
+    <available file="${file.local.machine.properties}" type="file" property="flag.local.machine.properties.file.exists" />
+  </target>
+
+  <!-- Custom Procedure Starts from HERE -->
+  <target name="ant-startup-obcs">
+    <ant antfile="startup-obcs.xml" inheritall="true" />
+  </target>
+
+  <target name="ant-startup-cdp">
+    <ant antfile="startup-cdp.xml" inheritall="true" />
+  </target>
+
+  <target name="ant-startup-systemtray" if="aua.os.family.is.windows">
+    <ant antfile="startup-systemtray.xml" inheritall="true" />
+  </target>
+
+</project>

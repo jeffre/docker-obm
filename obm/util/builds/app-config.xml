@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<project name="Application Common Configuration Definitions" default="remove-config-folder">
+
+  <!-- Commonly Used Properties -->
+  <property name="fs" value="${file.separator}" />
+  <dirname property="obc.dirpath.app.util.builds"  file="${ant.file}"/>
+
+  <!-- ###################  DEFINE VENDOR SPECIFIC PROPERTIES ####################### -->
+
+  <property name="obc.app.config.product.id"                   value="obm"/>
+  <property name="obc.app.config.product.name"                 value="Ahsay Online Backup Manager"/>
+  <property name="obc.app.config.product.name.short"           value="AhsayOBM"/>
+  <property name="obc.app.config.product.name.trimmed"         value="AhsayOBM"/>
+  <property name="obc.app.config.vendor.name"                  value="Ahsay Systems Corporation"/>
+  <property name="obc.app.config.vendor.url"                   value="www.ahsay.com"/>
+  <property name="obc.app.config.vendor.email"                 value="support-kb@ahsay.com"/>
+
+  <!-- ###################  DEFINE RUNTIME STRUCTURE PROPERTIES ####################### -->
+  
+  <dirname property="obc.dirpath.util"                          file="${obc.dirpath.app.util.builds}"/>
+  <property    name="obc.dirpath.util.bin"                     value="${obc.dirpath.util}${fs}bin"/>  
+  <property    name="obc.dirpath.util.lib"                     value="${obc.dirpath.util}${fs}lib"/>
+  
+  <dirname property="obc.dirpath.app.home"                      file="${obc.dirpath.util}"/>
+  <property    name="obc.dirpath.app.bin"                      value="${obc.dirpath.app.home}${fs}bin"/>
+  <property    name="obc.dirpath.app.icons"                    value="${obc.dirpath.app.home}${fs}icons"/>
+  <property    name="obc.dirpath.app.ipc"                      value="${obc.dirpath.app.home}${fs}ipc"/>
+  <property    name="obc.dirpath.app.ipc.channel"              value="${obc.dirpath.app.home}${fs}ipc"/>
+  <property    name="obc.dirpath.app.jvm"                      value="${obc.dirpath.app.home}${fs}jvm"/>
+  <property    name="obc.dirpath.app.jvm.bin"                  value="${obc.dirpath.app.jvm}${fs}bin"/>
+  <property    name="obc.dirpath.app.jvm32"                    value="${obc.dirpath.app.home}${fs}jvm32"/>
+  <property    name="obc.dirpath.app.jvm32.bin"                value="${obc.dirpath.app.jvm32}${fs}bin"/>
+  <property    name="obc.dirpath.app.aua"                      value="${obc.dirpath.app.home}${fs}aua"/>
+  <property    name="obc.dirpath.app.aua.bin"                  value="${obc.dirpath.app.aua}${fs}bin"/>
+  <property    name="obc.dirpath.app.aua.builds"               value="${obc.dirpath.app.aua}${fs}builds"/>
+  <property    name="obc.dirpath.app.aua.ipc"                  value="${obc.dirpath.app.aua}${fs}ipc"/>  
+  <property    name="obc.dirpath.app.aua.ipc.xmlchannel"       value="${obc.dirpath.app.aua.ipc}${fs}xmlchannel"/>  
+  <property    name="obc.dirpath.app.aua.jvm"                  value="${obc.dirpath.app.aua}${fs}jvm"/>
+  <property    name="obc.dirpath.app.aua.jvm.bin"              value="${obc.dirpath.app.aua.jvm}${fs}bin"/>
+  <property    name="obc.filepath.app.home.txt"                value="${obc.dirpath.app.home}${fs}home.txt"/>
+  <property    name="obc.filepath.app.config.ini"              value="${obc.dirpath.app.home}${fs}config.ini"/>
+  <property    name="obc.filepath.app.aua.config.xml"          value="${obc.dirpath.app.aua}${fs}config.xml"/>
+  <property    name="obc.filepath.app.aua.local.properties"    value="${obc.dirpath.app.aua.builds}${fs}local-machine.properties"/>
+
+  <!-- ###################  DEFINE PRELOAD PROPERTIES ####################### -->
+
+  <property name="obc.filename.preload.properties"         value="obc-deployment.properties"/>
+  <property name="obc.filepath.preload.properties"         value="${obc.dirpath.util.builds}${fs}${obc.filename.preload.properties}"/> 
+
+  <!-- ###################  DEFINE DEFAULT INSTALLER PROPERTIES #######################-->
+
+  <target name="verify-predefined-properties-exist">
+    <available file="${obc.filepath.preload.properties}" property="flag.exist.predefined.property"/>
+  </target>
+
+  <target name="init-predefined-obc-deployment-properties" depends="verify-predefined-properties-exist" if="flag.exist.predefined.property">
+    <loadproperties srcFile="${obc.filepath.preload.properties}"/>
+    <echo message="Predefined Deployment Properties Loaded"/>
+  </target>
+  
+  <target name="init-obc-deployment-properties" depends="init-predefined-obc-deployment-properties">
+  </target>
+
+  <!-- ################  DEFINE COMMON APPLICATION CONFIGURATION PROCEDURE ####################-->
+  
+  <target name="setup-autoupdateagent-config" depends="init-obc-deployment-properties">
+    <mkdir dir="${obc.dirpath.app.aua.ipc.xmlchannel}"/>
+    <ant antfile="${obc.dirpath.app.aua.builds}${fs}aua-check-properties.xml"/>
+  </target>
+
+  <target name="verify-config-ini-exist" depends="init-obc-deployment-properties">
+    <available file="${obc.filepath.app.config.ini}" property="flag.exist.config.ini"/>
+  </target>
+
+  <target name="init-config-ini-properties" depends="verify-config-ini-exist" if="flag.exist.config.ini">
+    <loadproperties srcFile="${obc.filepath.app.config.ini}"/>
+    <echo message="Config INI Loaded"/>
+  </target>
+
+  <target name="setup-config-ini" depends="init-config-ini-properties">
+    <!-- Used in INNO upgrade -->
+    <condition property="win.config.ini.app.system.ui.vm.opt.xms" value="${app.system.ui.vm.opt.xms}" else="128">
+      <isset property="app.system.ui.vm.opt.xms"/>
+    </condition>
+    <condition property="win.config.ini.app.system.ui.vm.opt.xmx" value="${app.system.ui.vm.opt.xmx}" else="768">
+      <isset property="app.system.ui.vm.opt.xmx"/>
+    </condition>
+    <condition property="win.config.ini.app.system.conf.language" value="${app.system.conf.language}" else="en">
+      <isset property="app.system.conf.language"/>
+    </condition>
+    <condition property="win.config.ini.app.system.product.name"  value="${app.system.product.name}"  else="${obc.app.config.product.id}">
+      <isset property="app.system.product.name"/>
+    </condition>
+    <condition property="win.config.ini.app.system.common.format.datetime.hourinday"
+      value="${app.system.common.format.datetime.hourinday}"
+       else="true">
+      <isset property="app.system.common.format.datetime.hourinday"/>
+    </condition>
+
+    <echo file="${obc.filepath.app.config.ini}" append="false">app.system.ui.vm.opt.xms=${win.config.ini.app.system.ui.vm.opt.xms}${line.separator}</echo>
+    <echo file="${obc.filepath.app.config.ini}" append="true">app.system.ui.vm.opt.xmx=${win.config.ini.app.system.ui.vm.opt.xmx}${line.separator}</echo>
+    <echo file="${obc.filepath.app.config.ini}" append="true">app.system.conf.language=${win.config.ini.app.system.conf.language}${line.separator}</echo>
+    <echo file="${obc.filepath.app.config.ini}" append="true">app.system.product.name=${win.config.ini.app.system.product.name}${line.separator}</echo>
+    <echo file="${obc.filepath.app.config.ini}" append="true">app.system.common.format.datetime.hourinday=${win.config.ini.app.system.common.format.datetime.hourinday}${line.separator}</echo>
+    
+  </target>
+
+
+</project>

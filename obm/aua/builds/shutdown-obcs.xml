@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="shutdown-obcs" default="shutdown-obcs">
+
+  <target name="shutdown-obcs">
+    <antcall inheritAll="true" target="verify-running-timestamp"/>
+    <antcall inheritAll="true" target="shutdown-obcs-with-file"/>
+    <antcall inheritAll="true" target="shutdown-obcs-with-exe"/>
+  </target>
+
+  <target name="verify-running-timestamp" if="flag.file.home.ipc.scheduler.running.exist" depends="check-flag">
+    <copy file="${aua.file.home.ipc.scheduler.running}" tofile="${aua.file.home.ipc.scheduler.running}.timestamp" />
+  </target>
+
+  <target name="check-flag" if="flag.dir.home.ipc.scheduler.exist" depends="check-ipc-directory-exist">
+    <available file="${aua.file.home.ipc.scheduler.running}"
+               type="file"
+               property="flag.file.home.ipc.scheduler.running.exist"/>
+  </target>
+
+  <target name="check-ipc-directory-exist">
+    <available file="${aua.dir.home.ipc.scheduler}"
+               type="dir"
+               property="flag.dir.home.ipc.scheduler.exist"/>
+  </target>
+
+  <target name="get-obcs-service-name">
+    <xmlproperty file="${aua.file.work.config}"/>
+    <condition property="aua.win.service.name.old.scheduler" value="OnlineBackupScheduler" else="AClickBackupScheduler">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+    <condition property="aua.win.service.name.new.scheduler" value="OBScheduler" else="OBAScheduler">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+  </target>
+
+  <target name="check-observices-properites-file-exist">
+    <condition property="flag.is.observices.properties.file.exist">
+      <available file="${aua.file.work.ipc.services.observices.properties}" />
+    </condition>
+  </target>
+
+  <target name="load-observices-properties" depends="check-observices-properites-file-exist" if="flag.is.observices.properties.file.exist">
+    <loadproperties srcfile="${aua.file.work.ipc.services.observices.properties}" />
+  </target>
+
+  <target name="check-service-status-tools-xml-file-exist">
+    <condition property="flag.is.service.status.tools.xml.file.exist">
+      <available file="service-status-tools.xml" />
+    </condition>
+  </target>
+
+  <target name="run-export-properties" depends="check-service-status-tools-xml-file-exist" if ="flag.is.service.status.tools.xml.file.exist">
+    <ant antfile="service-status-tools.xml" target="export-properties" inheritall="true" >
+      <property name="param.filepath.properties.file" value="${aua.file.work.ipc.services.observices.properties}" />
+      <property name="param.dir.properties.file.base.dir" value="${aua.dir.work.ipc.services}" />
+      <property name="param.prefix.export.properties" value="observice." />
+    </ant>
+  </target>
+  
+  <target name="get-obcs-service-status" depends="load-observices-properties">
+    <condition property="executable.win.service.command" value="Service.exe">
+      <not>
+        <isset property="executable.win.service.command"/>
+      </not>
+    </condition>
+    <exec executable="${aua.dir.home.util.bin}${fs}${executable.win.service.command}" failonerror="false" spawn="false" outputproperty="observice.scheduler.old.service.status" resultproperty="observice.scheduler.old.service.cmd.return.value">
+      <arg line="-q ${aua.win.service.name.old.scheduler}"/>
+    </exec>
+    <exec executable="${aua.dir.home.util.bin}${fs}${executable.win.service.command}" failonerror="false" spawn="false" outputproperty="observice.scheduler.new.service.status" resultproperty="observice.scheduler.new.service.cmd.return.value">
+      <arg line="-q ${aua.win.service.name.new.scheduler}"/>
+    </exec>
+    <antcall inheritall="true" target="run-export-properties"/>
+  </target>
+
+  <target name="shutdown-obcs-with-exe" depends="get-obcs-service-name" if="aua.os.family.is.windows">
+    <antcall inheritall="true" target="get-obcs-service-status"/>
+    <echo message="Shutdown Scheduler service" />
+    <antcall inheritall="true" target="service-stop-obcs-process"/>
+    <antcall inheritall="true" target="taskkill-obcs-process"/>
+    <sleep seconds="10"/>
+    <delete>
+      <fileset dir="${aua.dir.home.ipc.scheduler}">
+        <include name="**/*"/>
+        <include name="**/*.*"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="service-stop-obcs-process">
+    <property name="executable.win.net.command" value="net.exe" />
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="stop ${aua.win.service.name.old.scheduler}" />
+    </exec>
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="stop ${aua.win.service.name.new.scheduler}" />
+    </exec>
+  </target>
+
+  <target name="taskkill-obcs-process">
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}Scheduler.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}Scheduler.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.jvm}${fs}bin${fs}SchedulerOBM.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.jvm}${fs}bin${fs}SchedulerOBM.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}bsch.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}bsch.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.jvm}${fs}bin${fs}bschJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.jvm}${fs}bin${fs}bschJW.exe"/>
+    </antcall>
+  </target>
+
+  <target name="verify-os-architecture">
+    <condition property="flag.os.is.x86">
+        <os arch="x86"/>
+    </condition>
+  </target>
+  
+  <target name="taskkill-process-x32" depends="verify-os-architecture" if="flag.os.is.x86">
+    <exec executable="${aua.dir.work.bin}${fs}AuaTaskkill.exe" spawn="true">
+      <arg line='"${param.taskkill.module.fullpath}"' />
+    </exec>
+  </target>
+
+  <target name="taskkill-process-x64" depends="verify-os-architecture" unless="flag.os.is.x86">
+    <exec executable="${aua.dir.work.bin}${fs}AuaTaskkill64.exe" spawn="true">
+      <arg line='"${param.taskkill.module.fullpath}"' />
+    </exec>
+  </target>
+  
+  <target name="check-scheduler-ipc-running">
+    <available file="${aua.file.home.ipc.scheduler.running}" property="running"/>
+  </target>
+  
+  <target name="shutdown-obcs-with-stop-file" depends="check-scheduler-ipc-running" if="running">
+    <echo message="Checking file name: ${aua.file.home.ipc.scheduler.stop}" />
+    <touch file="${aua.file.home.ipc.scheduler.stop}" />
+    <antcall target="monitor-flag" inheritAll="true" />
+  </target>
+  
+  <target name="shutdown-obcs-with-file" unless="aua.os.family.is.windows">
+   <antcall inheritall="true" target="shutdown-obcs-with-stop-file" />
+  </target>
+  
+  <target name="monitor-flag">
+    <waitfor maxwait="3" maxwaitunit="minute"
+             checkevery="500" checkeveryunit="millisecond"
+             timeoutproperty="flag.scheduler.running.file.still.exist">
+      <not>
+        <available file="${aua.file.home.ipc.scheduler.running}"/>
+      </not>
+    </waitfor>
+    <delete file="${aua.file.home.ipc.scheduler.stop}" failonerror="false" />
+    <antcall target="verify-scheduler-is-down" inheritAll="true" />
+    <delete file="${aua.file.home.ipc.scheduler.running}.timestamp" failonerror="false" />
+  </target>
+
+  <target name="verify-scheduler-is-down" if="flag.scheduler.file.still.exist">
+    <uptodate property="flag.file.home.ipc.scheduler.running.is.uptodate"
+              srcfile="${aua.file.home.ipc.scheduler.running}.timestamp"
+              targetfile="${aua.file.home.ipc.scheduler.running}"/>
+    <delete file="${aua.file.home.ipc.scheduler.running}.timestamp" failonerror="false" />
+    <fail if="flag.file.home.ipc.scheduler.running.is.uptodate" message="Scheduler still running" />
+    <delete file="${aua.file.home.ipc.scheduler.running}" failonerror="false" />
+  </target>
+
+</project>

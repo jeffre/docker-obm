@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="restart-systemtray" default="restart-systemtray-session">
+
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <!-- Restart SystemTray.exe Main Procedure -->
+  <target name="restart-systemtray-session" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <antcall target="monitor-shutdown-flag" inheritall="true"/>
+    <echo message="Sleep 5 seconds before restart SystemTray" />
+    <sleep seconds="5" />
+    <property name="systemtray-exe" location="${aua.dir.work.bin}${fs}RestartSystemTray.bat"/>
+    <exec executable="${systemtray-exe}"
+          dir="${aua.dir.home.bin}"
+          spawn="true" />
+    <echo message="Restarted SystemTray" />
+  </target>
+
+  <!-- Check and Load properties file -->
+  <target name="check-local-machine-properties"
+          unless="flag.local.machine.properties.file.exists"
+          depends="check-properties-file-exists">
+    <ant antfile="aua-check-properties.xml"/>
+  </target>
+
+  <target name="check-properties-file-exists">
+    <available file="${file.local.machine.properties}" type="file" property="flag.local.machine.properties.file.exists" />
+  </target>
+
+  <!-- Check if the flag file is removed -->
+  <target name="monitor-shutdown-flag">
+    <echo message="wait for server to delete flag" />
+    <waitfor maxwait="10" maxwaitunit="minute"
+             checkevery="500" checkeveryunit="millisecond"
+             timeoutproperty="flag.systemtray.restart.timeout">
+      <not>
+        <available file="${aua.file.work.ipc.systemtray.shutdown}"/>
+      </not>
+    </waitfor>
+  </target>
+
+</project>

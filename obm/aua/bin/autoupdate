@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# aua: Startup @sed.script.name@ (AutoUpdateAgent for Ahsay Online Backup Manager)
+#
+# chkconfig: 2345 99 99
+#
+# description: Running @sed.script.name@ on system startup
+
+# Usage for RedHat/Fedora/Mandriva/Centos and RedHat base distribution
+#
+# 1. Set the correct installed path of @sed.script.name@
+# 2. Save this file in /etc/rc.d/init.d/
+# 3. Change the AUA_USER and AUA_HOME if necessary
+# 4. Add @sed.script.name@ to the startup service by: [root]# chkconfig --add @sed.script.name@
+# 5. Check if it is on: [root]# chkconfig --list @sed.script.name@
+# 6. Startup @sed.script.name@ service manually by: [root]# service @sed.script.name@ start
+# 7. Shutdown @sed.script.name@ service manually by: [root]# service @sed.script.name@ stop
+
+# Usage for Debian
+#
+# 1. Set the correct installed path for @sed.script.name@
+# 2. Save this file in /etc/init.d/
+# 3. Change the AUA_HOME and AUA_USER if necessary
+# 4. Add @sed.script.name@ to the startup service by: [root]# update-rc.d @sed.script.name@ start 1 2 3 4 5 .
+# 5. Startup @sed.script.name@ service manually by: [root]# /etc/init.d/@sed.script.name@ start
+# 6. Shutdown @sed.script.name@ service manually by: [root]# /etc/init.d/@sed.script.name@ stop
+
+# Usage for SuSE
+#
+# 1. Set the correct installed path of @sed.script.name@
+# 2. Save this file in /etc/init.d/
+# 3. Change the AUA_HOME and AUA_USER if necessary
+# 4. Add @sed.script.name@ to the startup service by: [root]# chkconfig --add @sed.script.name@
+# 5. Check if it is on: [root]# chkconfig --list @sed.script.name@
+# 6. Startup @sed.script.name@ service manually by: [root]# /etc/init.d/@sed.script.name@ start
+# 7. Shutdown @sed.script.name@ service manually by: [root]# /etc/init.d/@sed.script.name@ stop
+
+# Usage for Slackware/FreeBSD/Solaris
+#
+# 1. Set the correct installed path for @sed.script.name@
+# 2. Save this file in /etc/rc.d/
+# 3. Change the AUA_USER and AUA_HOME if necessary
+# 4. Add @sed.script.name@ to the startup service by: [root]# echo /etc/rc.d/@sed.script.name@ >> /etc/rc.d/rc.local
+# 5. Startup @sed.script.name@ service manually by: [root]# /etc/rc.d/@sed.script.name@ start
+# 6. Shutdown @sed.script.name@ service manually by: [root]# /etc/rc.d/@sed.script.name@ stop
+
+case "$1" in
+start)
+        echo "Start AutoUpdateAgent for [ Ahsay Online Backup Manager ]"
+        nohup sh -c "@sed.autoupdate.home@/bin/startup.sh" &> /dev/null
+        sleep 5
+        ;;
+
+stop)
+        echo "Shut down AutoUpdateAgent for [ Ahsay Online Backup Manager ]"
+        nohup sh -c "@sed.autoupdate.home@/bin/shutdown.sh" &> /dev/null
+        sleep 5
+        ;;
+*)
+        echo $"usage: $0 {start|stop}";;
+esac
+
+exit 1

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-core-shutdown" default="shutdown">
+
+  <property name="fs" value="${file.separator}" />
+
+  <target name="shutdown">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <ant antfile="${dir.antfile}${fs}custom-shutdown.xml" inheritall="false" />
+  </target>
+
+</project>                                                                                                               

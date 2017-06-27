@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-core-update" default="check-local-machine-properties">
+
+  <!-- All parameters passed from AutoUpdataAgent -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <!-- ########################### CHECK AND LOAD PROPERTIES FILE ######################### -->
+
+  <target name="check-local-machine-properties"
+          unless="flag.local.machine.properties.file.exists"
+          depends="check-properties-file-exists">
+    <ant antfile="aua-check-properties.xml"/>
+  </target>
+
+  <target name="check-properties-file-exists">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <available file="${dir.antfile}${fs}${file.local.machine.properties}" type="file" property="flag.local.machine.properties.file.exists" />
+  </target>
+
+  <!-- ################################# SPAWN UPDATE AGENT ################################ -->
+  <target name="spawn" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <antcall target="non-mac-spawn" inheritall="true"/>
+    <antcall target="mac-spawn"     inheritall="true"/>
+
+  </target>
+
+  <target name="non-mac-spawn" unless="aua.os.family.is.mac">
+    <java classname="${aua.classname.auaspawn}" fork="true" spawn="true" dir="${basedir}">
+      <classpath>
+        <fileset dir="${aua.dir.work.lib}" casesensitive="no">
+          <include name="aua-spawn.jar"/>
+          <include name="jdom.jar" />
+          <include name="log4j.jar" />
+        </fileset>
+        <fileset dir="${aua.dir.work.ant.lib}" casesensitive="no">
+          <include name="ant.jar" />
+          <include name="ant-launcher.jar" />
+          <include name="xercesImpl.jar" />
+          <include name="xml-apis.jar" />
+        </fileset>
+      </classpath>
+      <jvmarg value="-Xrs"/>
+      <arg line="config.xml ${version.new}" />
+    </java>
+  </target>
+
+  <target name="mac-spawn" if="aua.os.family.is.mac">
+    <antcall target="mac-remove-file-aua-core-update-spawn-start-sh" inheritall="true"/>
+    <echo file="${aua.dir.home.bin}${fs}aua-core-update-spawn-start.sh">#!/bin/sh
+
+AUA_HOME="$${PWD}"
+ANT_HOME="$${AUA_HOME}/ant"
+JAVA_HOME="$${AUA_HOME}/jvm"
+
+PATH="$${JAVA_HOME}/bin:$${ANT_HOME}/bin:$${PATH}"
+
+ANT_HOME_LIB="$${ANT_HOME}/lib"
+AUA_HOME_LIB="$${AUA_HOME}/lib"
+
+VERSION_TO_BE_UPGRADED="$$1"
+
+java -Xrs -cp "$${ANT_HOME_LIB}/ant.jar:$${ANT_HOME_LIB}/ant-launcher.jar:$${ANT_HOME_LIB}/xercesImpl.jar:$${ANT_HOME_LIB}/xml-apis.jar:$${AUA_HOME_LIB}/aua-spawn.jar:$${AUA_HOME_LIB}/jdom.jar:$${AUA_HOME_LIB}/log4j.jar" "auaspawn" "config.xml" "$${VERSION_TO_BE_UPGRADED}"
+
+exit 0</echo>
+    <chmod perm="ugo+rx" file="${aua.dir.home.bin}${fs}aua-core-update-spawn-start.sh"/>
+    <exec executable="${aua.dir.home.bin}${fs}aua-core-update-spawn-start.sh" spawn="true">
+      <arg line="${version.new}" />
+    </exec>
+  </target>
+
+  <target name="clean-up" unless="flag.file.already.exists" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <delete failonerror="false" dir="${aua.dir.work.update}"/>
+  </target>
+
+  <!-- ################################# DOWNLOAD PATCH #################################### -->
+  <target name="download" unless="flag.file.already.exists" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <delete failonerror="false" file="${aua.dir.work.update}${fs}${data.filename}" />
+    <antcall target="download-file-set" inheritall="true"/>
+    <available file="${aua.dir.work.update}${fs}${data.filename}" type="file" property="flag.download.success"/>
+    <fail unless="flag.download.success" message="Target file ${data.filename} not found in local directory" />
+    <antcall target="extract-and-examine-patch" inheritall="true"/>
+    <antcall target="chmod-for-shell-scripts" inheritall="true"/>
+  </target>
+
+  <!-- Download Procedures -->
+  <target name="download-file-set">
+    <!-- url.data-file parameters are given by program -->
+    <mkdir dir="${aua.dir.work.update}"/>
+    <taskdef name="auaget" classname="${aua.classname.get.file}" classpath="${aua.file.work.lib.aua.jar}"/>
+    <auaget protocol="${network.protocol}" host="${host.url}" path="${data.filepath}/${data.filename}"
+            dest="${aua.dir.work.update}${fs}${data.filename}"
+            proxytype="${proxy.type}" proxyhost="${proxy.host}" proxyport="${proxy.port}"
+            proxyusername="${proxy.username}" proxypassword="${proxy.password}"
+            username="${auth.username}" password="${auth.password}" productid="${prod.id}" productversion="${current.prod.version}" javaversion="${java.version}" auaversion="${current.aua.version}" />
+  </target>
+
+  <!-- Extract Patch Procedures -->
+  <target name="extract-and-examine-patch">
+    <mkdir dir="${aua.dir.work.update}${fs}${version.new}"/>
+    <mkdir dir="${aua.dir.work.update}${fs}${version.new}${fs}${dir.upgrade}"/>
+    <mkdir dir="${aua.dir.work.update}${fs}tmp"/>
+    <unzip src="${aua.dir.work.update}${fs}${data.filename}" dest="${aua.dir.work.update}${fs}tmp"/>
+    <antcall target="allocate-update-file" inheritall="true"/>
+    <delete dir="${aua.dir.work.update}${fs}tmp" />
+    <delete file="${aua.dir.work.update}${fs}${data.filename}" />
+  </target>
+
+  <target name="allocate-update-file" depends="check-double-zipped">
+    <antcall inheritall="true" target="move-with-repeated-subdir"/>
+    <antcall inheritall="true" target="move-without-repeated-subdir"/>
+    <antcall inheritall="true" target="move-spawn-files"/>
+  </target>
+
+  <!-- Most Partners may accidentally created (patch).zip => (patch/patch).zip -->
+  <target name="check-double-zipped">
+    <pathconvert property="data.filename.no.extension">
+      <path path="${data.filename}"/>
+      <chainedmapper>
+        <flattenmapper/>
+        <globmapper from="*.zip" to="*" casesensitive="no"/>
+      </chainedmapper>
+    </pathconvert>
+    <available file="${aua.dir.work.update}${fs}tmp${fs}${data.filename.no.extension}" type="dir" property="repeated.subdir.present"/>
+  </target>
+
+  <target name="move-with-repeated-subdir" if="repeated.subdir.present">
+    <move file="${aua.dir.work.update}${fs}tmp${fs}${data.filename.no.extension}" tofile="${aua.dir.work.update}${fs}${version.new}${fs}${dir.upgrade}" overwrite="true"/>
+  </target>
+
+  <target name="move-without-repeated-subdir" unless="repeated.subdir.present">
+    <move file="${aua.dir.work.update}${fs}tmp" tofile="${aua.dir.work.update}${fs}${version.new}${fs}${dir.upgrade}" overwrite="true"/>
+  </target>
+
+  <target name="move-spawn-files">
+    <move todir="${aua.dir.work}" overwrite="true" failonerror="false">
+      <fileset dir="${aua.dir.work.update}${fs}${version.new}${fs}${dir.upgrade}">
+        <include name="lib/aua-spawn.jar"/>
+        <include name="builds/aua-core-update-spawn.xml"/>
+      </fileset>
+    </move>
+  </target>
+
+  <!-- ############################### SHUTDOWN AUTOUPDATEAGENT ############################ -->
+
+  <target name="shutdown" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <antcall target="shutdown-for-windows"   inheritall="true" />
+    <antcall target="shutdown-for-mac"       inheritall="true" />
+    <antcall target="shutdown-for-unix-like" inheritall="true" />
+    <antcall target="shutdown-for-netware"   inheritall="true" />
+    <sleep seconds="5"/>
+    <antcall target="non-mac-post-shutdown" inheritall="true"/>
+    <antcall target="mac-post-shutdown"     inheritall="true"/>
+  </target>
+
+  <target name="shutdown-for-windows" if="aua.os.family.is.windows">
+    <condition property="flag.aua.shutdown.with.file" value="true">
+      <or>
+        <os name="Windows 95" />
+        <os name="Windows 98" />
+        <os name="Windows Me" />
+      </or>
+    </condition>
+    <echo message="Shutdown AutoUpdateAgent service" />
+    <antcall inheritall="true" target="shutdown-for-windows-by-service"/>
+    <antcall inheritall="true" target="shutdown-for-windows-by-batch"/>
+    <antcall inheritall="true" target="taskkill-aua-process"/>
+  </target>
+
+  <target name="taskkill-aua-process">
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaObm.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaObm.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaObmJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaObmJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaAcb.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaAcb.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaAcbJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}AuaAcbJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}Aua.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}Aua.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x32">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}auaJW.exe"/>
+    </antcall>
+    <antcall inheritall="true" target="taskkill-process-x64">
+      <param name="param.taskkill.module.fullpath"  value="${aua.dir.home.bin}${fs}auaJW.exe"/>
+    </antcall>
+  </target>
+
+  <target name="verify-os-architecture">
+    <condition property="flag.os.is.x86">
+      <os arch="x86"/>
+    </condition>
+  </target>
+
+  <target name="taskkill-process-x32" depends="verify-os-architecture" if="flag.os.is.x86">
+    <exec failifexecutionfails="false" executable="${aua.dir.work.bin}${fs}AuaTaskkill.exe" spawn="false">
+      <arg line='"${param.taskkill.module.fullpath}"' />
+    </exec>
+  </target>
+
+  <target name="taskkill-process-x64" depends="verify-os-architecture" unless="flag.os.is.x86">
+    <exec failifexecutionfails="false" executable="${aua.dir.work.bin}${fs}AuaTaskkill64.exe" spawn="false">
+      <arg line='"${param.taskkill.module.fullpath}"' />
+    </exec>
+  </target>
+
+  <target name="shutdown-for-windows-by-service" unless="flag.aua.shutdown.with.file">
+    <xmlproperty file="${aua.file.work.config}"/>
+    <condition property="aua.win.service.name.old.autoupdate" value="AutoUpdateAgentOBM" else="AutoUpdateAgentACB">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+    <condition property="aua.win.service.name.new.autoupdate" value="OBAutoUpdate" else="OBAAutoUpdate">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+    <property name="executable.win.net.command" value="net.exe" />
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="stop ${aua.win.service.name.old.autoupdate}" />
+    </exec>
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="stop ${aua.win.service.name.new.autoupdate}" />
+    </exec>
+  </target>
+
+  <target name="shutdown-for-windows-by-batch">
+    <exec executable="${aua.dir.work.bin}${fs}auas-shutdown.bat" dir="${aua.dir.work.bin}" spawn="true" />
+    <sleep seconds="5"/>
+  </target>
+
+  <target name="shutdown-for-mac" if="aua.os.family.is.mac">
+    <exec executable="${aua.dir.work.bin}${fs}shutdown.sh" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="shutdown-for-unix-like" if="aua.os.family.is.unix-like">
+    <exec executable="${aua.dir.work.bin}${fs}shutdown.sh" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="shutdown-for-netware" if="aua.os.family.is.netware">
+    <exec executable="${aua.dir.work.bin}${fs}shutdown.ncf" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="non-mac-post-shutdown" unless="aua.os.family.is.mac">
+    <delete>
+      <fileset dir="${aua.dir.work.ipc}">
+        <include name="**/*"/>
+        <include name="**/*.*"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="mac-post-shutdown" if="aua.os.family.is.mac">
+    <delete>
+      <fileset dir="${aua.dir.work.ipc}" followsymlinks="false">
+        <include name="**/*"/>
+        <include name="**/*.*"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- ################################# INSTALL PATCH #################################### -->
+  <target name="install" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <property name="dir.new.upgrade" value="${dir.new}${fs}${dir.upgrade}" />
+    <property name="dir.old.downgrade" value="${dir.old}${fs}${dir.downgrade}" />
+
+    <antcall target="non-mac-install" inheritall="true"/>
+    <antcall target="mac-install" inheritall="true"/>
+    <antcall target="post-install-procedures" inheritall="true"/>
+  </target>
+
+  <target name="non-mac-install" unless="aua.os.family.is.mac">
+
+    <mkdir dir="${aua.dir.work.update}${fs}${dir.cache}" />
+
+    <move todir="${aua.dir.work.update}${fs}${dir.cache}" preservelastmodified="true">
+      <fileset dir="${basedir}">
+        <present present="both" targetdir="${aua.dir.work.update}${fs}${dir.new.upgrade}" />
+      </fileset>
+    </move>
+
+    <copy todir="${basedir}" preservelastmodified="true">
+      <fileset dir="${aua.dir.work.update}${fs}${dir.new.upgrade}">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <delete dir="${aua.dir.work.update}${fs}${dir.cache}" failonerror="false"/>
+    <delete dir="${aua.dir.work.update}${fs}${dir.new}" failonerror="false"/>
+    <delete dir="${aua.dir.work.update}" failonerror="false"/>
+    <antcall target="chmod-for-shell-scripts" inheritall="true" />
+  </target>
+
+  <target name="mac-install" if="aua.os.family.is.mac">
+
+    <mkdir dir="${aua.dir.work.update}${fs}${dir.cache}" />
+
+    <move todir="${aua.dir.work.update}${fs}${dir.cache}" preservelastmodified="true">
+      <fileset dir="${basedir}" followsymlinks="false">
+        <present present="both" targetdir="${aua.dir.work.update}${fs}${dir.new.upgrade}" />
+      </fileset>
+    </move>
+
+    <copy todir="${basedir}" preservelastmodified="true">
+      <fileset dir="${aua.dir.work.update}${fs}${dir.new.upgrade}" followsymlinks="false">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <delete dir="${aua.dir.work.update}${fs}${dir.cache}" failonerror="false"/>
+    <delete dir="${aua.dir.work.update}${fs}${dir.new}" failonerror="false"/>
+    <delete dir="${aua.dir.work.update}" failonerror="false"/>
+    <antcall target="chmod-for-shell-scripts" inheritall="true"/>
+  </target>
+
+  <target name="post-install-procedures">
+    <antcall target="post-install" inheritall="true"/>
+  </target>
+
+  <target name="check-post-install-script-existence">
+    <property name="file.update.post.install.aua.bat" value="${aua.dir.work}${fs}post-install-aua.bat"/>
+    <property name="file.update.post.install.aua.sh"  value="${aua.dir.work}${fs}post-install-aua.sh"/>
+    <condition property="flag.is.post.install.script.exist">
+      <or>
+        <available file="${file.update.post.install.aua.bat}"/>
+        <available file="${file.update.post.install.aua.sh}"/>
+      </or>
+    </condition>
+  </target>
+
+  <target name="post-install" depends="check-post-install-script-existence" if="flag.is.post.install.script.exist">
+    <antcall target="win-post-install" inheritall="true"/>
+    <antcall target="mac-post-install" inheritall="true"/>
+    <antcall target="nix-post-install" inheritall="true"/>
+  </target>
+
+  <target name="win-post-install" if="aua.os.family.is.windows">
+    <exec executable="cmd" spawn="true">
+      <arg value="/c"/>
+      <arg value="${file.update.post.install.aua.bat}"/>
+    </exec>
+  </target>
+
+  <target name="mac-post-install" if="aua.os.family.is.mac">
+    <chmod perm="ugo+rx" file="${file.update.post.install.aua.sh}"/>
+    <exec executable="${file.update.post.install.aua.sh}"/>
+  </target>
+
+  <target name="nix-post-install" if="aua.os.family.is.unix-like">
+    <chmod perm="ugo+rx" file="${file.update.post.install.aua.sh}"/>
+    <parallel>
+      <exec executable="${file.update.post.install.aua.sh}" spawn="true"/>
+      <sleep hours="24"/>
+    </parallel>
+  </target>
+
+  <!-- ################################# ROLLBACK PATCH #################################### -->
+
+  <target name="rollback" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <antcall target="rollback-cache" inheritall="true" />
+    <antcall target="delete-cache" inheritall="true" />
+    <antcall target="chmod-for-shell-scripts" inheritall="true" />
+  </target>
+
+  <target name="check-cache">
+    <available file="${aua.dir.work.update}${fs}${dir.cache}" type="dir" property="flag.dir.cache.exist"/>
+  </target>
+
+  <target name="rollback-cache" if="flag.dir.cache.exist" depends="check-cache">
+    <antcall target="non-mac-rollback-cache" inheritall="true"/>
+    <antcall target="mac-rollback-cache" inheritall="true"/>
+  </target>
+
+  <target name="non-mac-rollback-cache" unless="aua.os.family.is.mac">
+    <copy todir="${basedir}" preservelastmodified="true">
+      <fileset dir="${aua.dir.work.update}${fs}${dir.cache}">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="mac-rollback-cache" if="aua.os.family.is.mac">
+    <copy todir="${basedir}" preservelastmodified="true">
+      <fileset dir="${aua.dir.work.update}${fs}${dir.cache}" followsymlinks="false">
+        <include name="**/*" />
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="delete-cache" if="flag.dir.cache.exist" depends="check-cache">
+    <delete dir="${aua.dir.work.update}${fs}${dir.cache}" failonerror="false" deleteonexit="true"/>
+  </target>
+
+  <!-- ############################### STARTUP AUTOUPDATEAGENT ############################ -->
+
+  <target name="startup" depends="check-local-machine-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <dirname property="dir.work"    file="${dir.antfile}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+    <delete failonerror="false">
+      <fileset dir="${dir.work}${fs}ipc${fs}xmlchannel">
+        <include name="*.xml"/>
+        <include name="running"/>
+      </fileset>
+    </delete>
+    <antcall inheritall="true" target="startup-for-windows"  />
+    <antcall inheritall="true" target="startup-for-mac"/>
+    <antcall inheritall="true" target="startup-for-unix-like"/>
+    <antcall inheritall="true" target="startup-for-netware"/>
+  </target>
+
+  <target name="startup-for-windows" if="aua.os.family.is.windows">
+    <condition property="flag.aua.startup.with.file" value="true">
+      <or>
+        <os name="Windows 95" />
+        <os name="Windows 98" />
+        <os name="Windows Me" />
+      </or>
+    </condition>
+    <antcall inheritall="true" target="startup-for-windows-by-service"/>
+    <antcall inheritall="true" target="startup-for-windows-by-batch"/>
+  </target>
+
+  <target name="startup-for-windows-by-service" unless="flag.aua.startup.with.file">
+    <xmlproperty file="${aua.file.work.config}"/>
+    <condition property="aua.win.service.name.old.autoupdate" value="AutoUpdateAgentOBM" else="AutoUpdateAgentACB">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+    <condition property="aua.win.service.name.new.autoupdate" value="OBAutoUpdate" else="OBAAutoUpdate">
+      <equals arg1="${auotupdate.product.name}" arg2="obm"/>
+    </condition>
+    <property name="executable.win.net.command" value="net.exe" />
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="start ${aua.win.service.name.old.autoupdate}" />
+    </exec>
+    <exec executable="${executable.win.net.command}" spawn="true">
+      <arg line="start ${aua.win.service.name.new.autoupdate}" />
+    </exec>
+  </target>
+
+  <target name="startup-for-windows-by-batch" if="flag.aua.startup.with.file">
+    <exec executable="${aua.dir.work.bin}${fs}startup.bat" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="startup-for-mac" if="aua.os.family.is.mac">
+    <antcall target="mac-remove-file-aua-core-update-spawn-start-sh" inheritall="true"/>
+    <exec executable="${aua.dir.work.bin}${fs}startup.sh" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="startup-for-unix-like" if="aua.os.family.is.unix-like">
+    <exec executable="${aua.dir.work.bin}${fs}startup.sh" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <target name="startup-for-netware" if="aua.os.family.is.netware">
+    <exec executable="${aua.dir.work.bin}${fs}startup.ncf" dir="${aua.dir.work.bin}" spawn="true" />
+  </target>
+
+  <!-- ################################# COMMON TARGET #################################### -->
+
+  <target name="mac-check-avail-file-aua-core-update-spawn-start-sh">
+    <condition property="flag.is.aua.core.update.spawn.start.sh.file.exist">
+      <available file="${aua.dir.home.bin}${fs}aua-core-update-spawn-start.sh"/>
+    </condition>
+  </target>
+
+  <target name="mac-remove-file-aua-core-update-spawn-start-sh" depends="mac-check-avail-file-aua-core-update-spawn-start-sh" if="flag.is.aua.core.update.spawn.start.sh.file.exist">
+    <delete file="${aua.dir.home.bin}${fs}aua-core-update-spawn-start.sh" failonerror="false" verbose="true"/>
+  </target>
+  <target name="chmod-for-shell-scripts" if="flag.os.use.shell" depends="check-os-use-shell">
+    <antcall target="non-mac-chmod-for-shell-scripts" inheritall="true"/>
+    <antcall target="mac-chmod-for-shell-scripts" inheritall="true"/>
+  </target>
+
+  <target name="non-mac-chmod-for-shell-scripts" unless="aua.os.family.is.mac">
+    <chmod perm="ugo+rx" type="file">
+      <fileset dir="${basedir}">
+        <include name="**/*.sh"/>
+      </fileset>
+    </chmod>
+  </target>
+
+  <target name="mac-chmod-for-shell-scripts" if="aua.os.family.is.mac">
+    <chmod perm="ugo+rx" type="file">
+      <fileset dir="${basedir}" followsymlinks="false">
+        <include name="**/*.sh"/>
+      </fileset>
+    </chmod>
+  </target>
+
+  <target name="check-os-use-shell">
+    <condition property="flag.os.use.shell">
+      <or>
+        <os family="unix"/>
+        <os family="mac"/>
+        <os family="tandem"/>
+      </or>
+    </condition>
+  </target>
+
+</project>

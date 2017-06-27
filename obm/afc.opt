@@ -1,0 +1,113 @@
+com.ahsay.afc.adt.Queue.debug=
+com.ahsay.afc.adt.Queue.info=
+com.ahsay.afc.bfs.AccessManager.debug=
+com.ahsay.afc.bfs.addFile.debug=
+com.ahsay.afc.bfs.BackupSetBasic.debug=
+com.ahsay.afc.bfs.BackupSetIndex.debug=
+com.ahsay.afc.bfs.BackupSetIndex.info=
+com.ahsay.afc.bfs.BFSTest.debug=
+com.ahsay.afc.bfs.CloseBrafAsync.debug=
+com.ahsay.afc.bfs.CloseBrafAsync=
+com.ahsay.afc.bfs.debug=
+com.ahsay.afc.bfs.FileBSetValidator.debug=
+com.ahsay.afc.bfs.flush.debug=
+com.ahsay.afc.bfs.IndexCorrupted.debug=
+com.ahsay.afc.bfs.lock.debug=
+com.ahsay.afc.bfs.ResourceMonitor.debug=
+com.ahsay.afc.bfs.ResourceMonitor.info=
+com.ahsay.afc.bfs.restoreEncodeEnforce.debug=
+com.ahsay.afc.bfs.RestoreXML.debug=
+
+# Print out debug messages for Microsoft VM (Hyper-V) Failover Cluster Backup
+com.ahsay.afc.cluster.debug=
+
+com.ahsay.afc.cop.debug.sleepTime=
+com.ahsay.afc.cop.debug=
+com.ahsay.afc.db.aft.debug=
+com.ahsay.afc.db.bdb.BlockDB.change=
+com.ahsay.afc.db.bdb.BlockDB.debug=
+com.ahsay.afc.db.bdb.BlockDB.info=
+com.ahsay.afc.db.bdb.BlockDB.performance=
+com.ahsay.afc.db.bdb.BlockFile.debug=
+com.ahsay.afc.db.bdb.BlockFile.info=
+com.ahsay.afc.db.bdb.Bptree.debug=
+com.ahsay.afc.db.bdb.Bptree.info=
+com.ahsay.afc.db.bdb.Bptree.perform=
+com.ahsay.afc.db.SortedFileTable.change=
+com.ahsay.afc.db.SortedFileTable.debug=
+com.ahsay.afc.db.SortedFileTable.info=
+com.ahsay.afc.db.SortedFileTable.performance=
+com.ahsay.afc.debug=
+com.ahsay.afc.delta.debug=
+com.ahsay.afc.event.AbstractEvent.debug=
+com.ahsay.afc.event.BackupSetEvent.debug=
+com.ahsay.afc.event.CorruptedIndexEvent.debug=
+com.ahsay.afc.event.GeneralEvent.debug=
+com.ahsay.afc.io.BackupInputStream.allowSystemCache=
+com.ahsay.afc.io.BackupInputStream.debug=
+com.ahsay.afc.io.BackupInputStream.forceJava=
+com.ahsay.afc.io.BufferedRandomAccessFile.debug=
+com.ahsay.afc.io.BufferedRandomAccessFile.disk-access=
+com.ahsay.afc.io.BufferedRandomAccessFile.freeze.debug=
+com.ahsay.afc.io.BufferedRandomAccessFile.info=
+com.ahsay.afc.io.BufferedRandomAccessFile.read-write=
+com.ahsay.afc.io.BufferedRandomAccessFile.useJavaRaf=
+com.ahsay.afc.io.lfs.debug=
+com.ahsay.afc.io.ReadAheadInputStream.debug=
+com.ahsay.afc.io.RestoreOutputStream.allowSystemCache=
+com.ahsay.afc.io.RestoreOutputStream.forceJava=
+com.ahsay.afc.io.secsh.debug=
+com.ahsay.afc.ipc.FileIpc.debug=
+com.ahsay.afc.log.FileLogger.debug=
+com.ahsay.afc.log.FileLogger.NoPrintStackTrace=
+com.ahsay.afc.mail.SMTPMailer.mailHost=
+com.ahsay.afc.mail.SMTPMailer.useDesknowXHeaders=
+com.ahsay.afc.mail.SMTPMailer.useOutlookXHeaders=
+
+# Print out debug messages for Microsoft Exchange Mail Level Backup
+com.ahsay.afc.microsoft.mapi.debug=
+
+# Print out debug messages for Microsoft Exchange Server Backup
+com.ahsay.afc.msexfull.debug=
+
+# Print out debug messages for Microsoft SQL Server Backup
+com.ahsay.afc.mssql.debug=
+
+# Print out debug messages for Microsoft Hyper-V Server Backup
+com.ahsay.afc.msvm.debug=
+
+com.ahsay.afc.net.http.debug=
+com.ahsay.afc.net.http.info=
+com.ahsay.afc.net.http.ipalias.debug=
+com.ahsay.afc.net.rps.debug=
+com.ahsay.afc.net.rps.keeplog=
+com.ahsay.afc.net.rps.nosync=
+com.ahsay.afc.net.rps.replicateFile.debug=
+com.ahsay.afc.net.rps.restorePointInterval=
+com.ahsay.afc.res.Resource.debug=
+com.ahsay.afc.util.ConcurrencyManager.debug=
+com.ahsay.afc.util.DateUtil.debug=
+com.ahsay.afc.util.FileUtil.debug=
+com.ahsay.afc.util.FileUtil.skipWinUtil=
+com.ahsay.afc.util.GZipStream.debug=
+com.ahsay.afc.util.GZipStream.forceJava=
+com.ahsay.afc.util.nix.DefaultUtil.force=
+com.ahsay.afc.util.nix.NixUtil.debug=
+com.ahsay.afc.util.PeriodicAction.debug=
+com.ahsay.afc.util.TimedFolder.debug=
+
+# Print out debug messages for VMware VM Backup
+com.ahsay.afc.vmware.debug=
+# Skip to remove the snapshot created for VMware VM Backup
+com.ahsay.afc.vmware.VMHost.SkipRemoveSnapshot=
+# Print out vmrun command debug messages for VMware VM Backup
+com.ahsay.afc.vmware.Vmrun.debug=
+# Skip to dump memory when taking snapshot for VMware VM Backup
+com.ahsay.afc.vmware.VMHost.SkipDumpMemory=
+# Skip Quiesce when taking snapshot for VMware VM Backup
+com.ahsay.afc.vmware.VMHost.SkipQuiesce=
+
+com.ahsay.ani.fsutil.FileSystemStat.debug=
+com.ahsay.ani.fsutil.FileSystemStat.UnsupportedOS=
+com.ahsay.ani.fsutil.FolderIterator.debug=
+com.ahsay.ani.fsutil.FolderIterator.javaOnly=

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="aua-core-download" default="download">
+
+  <!-- proxy.* settings are passed from program -->
+  <!-- protocol, host.url, data.filepath, data.filename are passed from program -->
+  <!-- version.new is passed from program-->
+
+  <!-- Properties File Name -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <target name="set-up-properties">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <loadproperties srcFile="${dir.antfile}${fs}${file.local.machine.properties}"/>
+  </target>
+  <target name="clean-up" depends="set-up-properties">
+    <delete failonerror="false" dir=".${fs}${version.new}" />
+  </target>
+  <target name="download" depends="set-up-properties">
+    <!-- Delete the update archive and the upgrade dir before download it -->
+    <delete failonerror="false" file=".${fs}${data.filename}" />
+    <antcall target="download-file-set" inheritall="true"/>
+    <available file=".${fs}${data.filename}" type="file" property="flag.download.success"/>
+    <fail unless="flag.download.success" message="Target file ${data.filename} not found in local directory" />
+    <antcall target="extract-and-examine-patch" inheritall="true"/>
+    <antcall target="chmod-for-shell-scripts" inheritall="true"/>
+  </target>
+
+  <!-- Download Procedures -->
+  <target name="download-file-set">
+    <!-- url.data-file parameters are given by program -->
+    <property name="url.data-file" value="${data.filepath}${fs}${data.filename}" />
+    <taskdef name="auaget" classname="${aua.classname.get.file}" classpath="${aua.file.work.lib.aua.jar}"/>
+    <auaget protocol="${network.protocol}" host="${host.url}" path="${data.filepath}/${data.filename}"
+            dest="${data.filename}"
+            proxytype="${proxy.type}" proxyhost="${proxy.host}" proxyport="${proxy.port}"
+            proxyusername="${proxy.username}" proxypassword="${proxy.password}"
+            username="${auth.username}" password="${auth.password}" productid="${prod.id}" productversion="${current.prod.version}" javaversion="${java.version}" auaversion="${current.aua.version}" />
+  </target>
+
+  <!-- Extract Patch Procedures -->
+  <target name="extract-and-examine-patch">
+    <mkdir dir="${basedir}${fs}${version.new}"/>
+    <mkdir dir="${basedir}${fs}${version.new}${fs}${dir.upgrade}"/>
+    <mkdir dir="${basedir}${fs}tmp"/>
+    <unzip src="${basedir}${fs}${data.filename}" dest=".${fs}tmp"/>
+    <antcall target="allocate-update-file" inheritall="true"/>
+    <delete dir="${basedir}${fs}tmp" />
+    <delete file="${basedir}${fs}${data.filename}" />
+  </target>
+
+  <target name="allocate-update-file" depends="check-double-zipped">
+    <antcall target="move-with-repeated-subdir" inheritall="true" />
+    <antcall target="move-without-repeated-subdir" inheritall="true" />
+  </target>
+
+  <!-- Most Partners may accidentally created (patch).zip => (patch/patch).zip -->
+  <target name="check-double-zipped">
+    <pathconvert property="data.filename.no.extension">
+      <path path="${data.filename}"/>
+      <chainedmapper>
+        <flattenmapper/>
+        <globmapper from="*.zip" to="*" casesensitive="no"/>
+      </chainedmapper>
+    </pathconvert>
+    <available file="${basedir}${fs}tmp${fs}${data.filename.no.extension}" type="dir" property="repeated.subdir.present"/>
+  </target>
+
+  <target name="move-with-repeated-subdir" if="repeated.subdir.present">
+    <move file="${basedir}${fs}tmp${fs}${data.filename.no.extension}" tofile="${basedir}${fs}${version.new}${fs}${dir.upgrade}" overwrite="true"/>
+  </target>
+
+  <target name="move-without-repeated-subdir" unless="repeated.subdir.present">
+    <move file="${basedir}${fs}tmp" tofile="${basedir}${fs}${version.new}${fs}${dir.upgrade}" overwrite="true"/>
+  </target>
+
+  <target name="chmod-for-shell-scripts" if="flag.os.use.shell" depends="check-os-use-shell">
+    <chmod perm="ugo+rx" type="file">
+      <fileset dir="${basedir}${fs}${version.new}${fs}${dir.upgrade}">
+        <include name="**/*.sh"/>
+      </fileset>
+    </chmod>
+  </target>
+
+  <target name="check-os-use-shell">
+    <condition property="flag.os.use.shell">
+      <or>
+        <os family="unix"/>
+        <os family="mac"/>
+        <os family="tandem"/>
+      </or>
+    </condition>
+  </target>
+
+</project>
+

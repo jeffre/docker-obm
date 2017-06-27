@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project name="Run Product" default="run-product">
+
+  <!-- Properties File Name -->
+  <property name="file.local.machine.properties" value="local-machine.properties" />
+  <property name="fs" value="${file.separator}" />
+
+  <target name="run-product" depends="verify-property-file">
+    <loadproperties srcFile="${file.local.machine.property}"/>
+    <antcall target="run-aua-client" inheritall="true" />
+    <antcall target="run-unix-like-product" inheritall="true" />
+  </target>
+
+  <target name="verify-property-file" unless="flag.property.file.exists" depends="check-property-file-exist">
+    <ant antfile="aua-check-properties.xml" inheritAll="false" />
+  </target>
+
+  <target name="check-property-file-exist">
+    <dirname property="dir.antfile" file="${ant.file}"/>
+    <property name="file.local.machine.property" value="${dir.antfile}${fs}${file.local.machine.properties}" />
+    <available file="${file.local.machine.property}" type="file" property="flag.property.file.exists" />
+  </target>
+
+  <target name="run-aua-client" if="flag.file.exists" depends="check-message-file">
+    <ant antfile="aua-client-update.xml" inheritAll="false" />
+  </target>
+
+  <target name="check-message-file">
+    <condition property="flag.file.exists">
+      <or>
+        <available file="${aua.file.work.message.xml}" type="file" property="flag.message.file.exist"/>
+        <available file="${aua.file.work.restore.xml}" type="file" property="flag.restore.file.exist"/>
+      </or>
+    </condition>
+  </target>
+
+  <target name="run-unix-like-product">
+    <property name="executable.unix-like" value="sh" />
+    <property name="script.unix-like" value="RunBackupManager.sh" />
+    <exec executable="${executable.unix-like}" dir="${aua.dir.home.bin}" spawn="true" >
+      <arg line="./${script.unix-like} &amp;" />
+    </exec>
+  </target>
+
+</project>
