@@ -22,7 +22,7 @@ EOF
 # These should be provided to the container as an environment variable such as:
 # BSET-1498585537118=PKCS7Padding,AES-256,ECB,SuperStrongSecretString
 #
-# Encrytion format: Algorithms, Mode, Bits, Key
+# Encrytion format: Algorithm, Mode, Bits, Key
 #   Algorithms: AES, Twofish, TripleDES, None
 #   Modes: ECB, CBC
 #   Bits: 128, 256
