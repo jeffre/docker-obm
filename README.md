@@ -12,7 +12,7 @@ backup agent for connecting to an AhsayOBSR
 + `HOST`  (required)
 + `BSET-{BACKUPSETID}`   (required)
 + `LANG`
-+ `PROTOCOL` (defaults to https)
++ `PROTO` (defaults to https)
 
 ## Setting Encryption
 Using an OBSR provided backupset id, you can formulate an
