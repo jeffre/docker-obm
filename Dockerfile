@@ -7,7 +7,7 @@ WORKDIR /obm
 COPY ifconfig /usr/bin/
 
 
-# Bootstrap OBM and SIGTERM receiver
+# Bootstrap OBM
 COPY docker-entrypoint.sh /
 
 
@@ -22,20 +22,6 @@ COPY docker-entrypoint.sh /
 #  *  jre32/*
 #  *  obm/bin/*.pdf
 COPY obm/ ./
-
-#COPY config.ini /root/.obm/config/
-RUN echo "/root/.obm/" > home.txt
-
-
-# Create the limited user what will be used to run the OBSR application
-#    Note: the userhomes folder needs to be rw for UID/GUID 400
-RUN groupadd --gid 400 ahsay \
-    && useradd --uid 400 --gid 400 ahsay #\
-#    && chown -R 400:400 .
-
-
-# De-escalate from root
-#USER ahsay
 
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
