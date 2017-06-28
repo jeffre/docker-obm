@@ -2,5 +2,30 @@
 # This script fakes the output of ifconfig for the singular purpose of meeting
 # an OBSR requirement in obtaining the MAC address (for licensing)
 
-MAC=$(cat /sys/class/net/eth*/address)
-echo "    ether $MAC"
+
+MAC=$(cat /sys/class/net/eth0/address)
+
+# Forgive me for the sins this I am about to commit (in lieu of `ip`)
+IP=$(grep -Po "\d+\.\d+\.\d+\.\d+" /proc/net/fib_trie | \
+        grep -Pv "\.(0|255)$" | grep -v "127.0.0.1" | sort | uniq)
+
+printf "eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet %s  netmask 255.255.0.0  broadcast 0.0.0.0
+        ether %s  txqueuelen 0  (Ethernet)
+        RX packets 9637  bytes 13815947 (13.1 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 5802  bytes 385844 (376.8 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0" $IP $MAC
+
+# Alternative approach:
+#   https://stackoverflow.com/questions/5281341/get-local-network-interface-addresses-using-only-proc#answer-42082822
+#ft_local=$(awk '$1=="Local:" {flag=1} flag' <<< "$(</proc/net/fib_trie)")
+#
+#for IF in $(ls /sys/class/net/); do
+#    networks=$(awk '$1=="'$IF'" && $3=="00000000" && $8!="FFFFFFFF" {printf $2 $8 "\n"}' <<< "$(</proc/net/route)" )
+#    for net_hex in $networks; do
+#            net_dec=$(awk '{gsub(/../, "0x& "); printf "%d.%d.%d.%d\n", $4, $3, $2, $1}' <<< $net_hex)
+#            mask_dec=$(awk '{gsub(/../, "0x& "); printf "%d.%d.%d.%d\n", $8, $7, $6, $5}' <<< $net_hex)
+#            awk '/'$net_dec'/{flag=1} /32 host/{flag=0} flag {a=$2} END {print "'$IF':\t" a "\n\t'$mask_dec'\n"}' <<< "$ft_local"
+#    done
+#done
