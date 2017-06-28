@@ -16,12 +16,14 @@ backup agent for connecting to an AhsayOBSR
 
 ## Setting Encryption
 Using an OBSR provided backupset id, you can formulate an
-environment variable that specifies how to encryption its data. The format is: **BSID-{BACKUPSETID}=PKCS7Padding,{Algorithm},{Mode},{Bits},{Key}**.  The available choices for the encryption attributes are:
+environment variable that specifies how to encryption its data. The format is:  
++ **BSID-{BACKUPSETID}=PKCS7Padding,{Algorithm}-{Bits},{Mode},{Key}**.
 
+The available choices for the encryption attributes are:  
 + **PKCS7Padding:** PKCS7Padding  
 + **Algorithms:** AES, Twofish, TripleDES, "" &nbsp; &nbsp; &nbsp; &nbsp; # An empty string implies no encryption  
-+ **Modes:** ECB, CBC  
 + **Bits:** 128, 256  
++ **Modes:** ECB, CBC  
 + **Key:** {any string of your choosing}  
 
 ### Examples
