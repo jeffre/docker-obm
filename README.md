@@ -4,7 +4,7 @@ backup agent for connecting to an AhsayOBSR
 ## How to use
 1. Create a user account with a backupset and a schedule. Be sure to give the schedule a hostname (eg docker-obm).
 3. Choose your encryption (see Setting Encryption below)
-2. Run: `docker run -e USERNAME=jeffre -e PASSWORD=secretpassword -e SERVER=obsr.example.com -e BSET-1498585537118=PKCS7Padding,AES-256,ECB,SuperStrongSecretString --hostname=docker-obm yoff/obsr`
+2. Run: `docker run -e USERNAME=jeffre -e PASSWORD=secretpassword -e SERVER=obsr.example.com -e BSET-1498585537118=PKCS7Padding,AES-256,ECB,SuperStrongSecretString --hostname=docker-obm yoff/obm`
 
 ### Available environment variables
 + `USERNAME` (required)
@@ -26,9 +26,9 @@ The available choices for the encryption attributes are:
 + **Modes:** ECB, CBC  
 + **Key:** {any string of your choosing}  
 
-### Examples
-Strong Encryption: `BSET-1498585537118=PKCS7Padding,AES-256,ECB,ElevenFoughtConstructionFavorite`  
-No Encryption: `BSET-1468557583616=PKCS7Padding,-256,,`  
+### Encryption Examples
++ Strong Encryption: `BSET-1498585537118=PKCS7Padding,AES-256,ECB,ElevenFoughtConstructionFavorite`  
++ No Encryption: `BSET-1468557583616=PKCS7Padding,-256,,`  
 
 
 ## Paths
