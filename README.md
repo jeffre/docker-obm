@@ -24,7 +24,7 @@ automatically restart after an update.
 
 ## Setting Encryption
 Using an OBSR provided backupset id, you can formulate an
-environment variable that specifies how to encryption its data. The format is:  
+environment variable that specifies how OBM will encrypt your data. The format is:  
 + **BSID-{BACKUPSETID}=PKCS7Padding,{Algorithm}-{Bits},{Mode},{Key}**.
 
 The available choices for the encryption attributes are:  
