@@ -1,6 +1,7 @@
 # Space savers
-obm/jre32/*
-obm/bin/*.pdf
-
+obm*/jre32/*
+obm*/bin/*.pdf
+obm*/bin/*.png
+obm*/bin/*.properties
 
 .git
