@@ -1,5 +1,4 @@
 #!/bin/bash
-# This script is compatible with obm
 
 
 # Create user config folder
@@ -34,21 +33,24 @@ env | grep "BSET*" >> /root/.obm/config/config.ini
 
 
 # Point OBM at configuation path
-echo "/root/.obm" > home.txt
+echo "/root/.obm" > ${APP_HOME}/home.txt
 
 
-# Prevent Scheduler from daemonizing
-sed -i bin/Scheduler.sh \
-    -e 's@> "\${APP_HOME}/log/Scheduler/console.log" 2>&1 &@@g'
+if [[ "${#}" == 0 ]]; then
+  # Establishes symlinks to jvm and sets file permissions
+  ${APP_HOME}/bin/config.sh
 
+  if [[ ${ENABLE_AUA^^} == "TRUE" ]]; then
+    # Start AUA (automatically daemonizes)
+    ${APP_HOME}/aua/bin/startup.sh
+  fi
 
-# Establishes symlinks to jvm and sets file permissions
-./bin/config.sh
+  # Monitor scheduler logs
+  tail -F /root/.obm/log/Scheduler/debug.log 2>/dev/null &
 
+  # Starts Scheduler Service
+  ${APP_HOME}/bin/Scheduler.sh
 
-# Monitor scheduler logs
-tail -F /root/.obm/log/Scheduler/debug.log &
-
-
-# Starts Scheduler Service
-./bin/Scheduler.sh
+else
+  exec "${@}"
+fi
