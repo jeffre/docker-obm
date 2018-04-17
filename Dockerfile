@@ -1,5 +1,5 @@
 FROM centos:latest
-ENV PATH="${PATH}:/obsr/bin:/obsr/check:/bootstrap" \
+ENV PATH="${PATH}:/obm/bin:/bootstrap" \
     APP=obm \
     APP_HOME=/obm
 WORKDIR ${APP_HOME}
