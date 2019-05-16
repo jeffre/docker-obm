@@ -1,12 +1,13 @@
 #!/bin/bash
 
+DOT_OBM="/root/.obm"
 
 # Create user config folder
-mkdir -p /root/.obm/config/
+mkdir -p "${DOT_OBM}"/config/
 
 
 # Create configuration for logging into OBSR
-cat << EOF > /root/.obm/config/config.ini
+cat << EOF > "${DOT_OBM}"/config/config.ini
 SET_VERSION_52_SCHEDULE_TAG=Y
 ID=${USERNAME:-unknown}
 PWD=${PASSWORD:-unknown}
@@ -29,11 +30,11 @@ EOF
 # Examples:
 #   PKCS7Padding,AES-256,ECB,SuperStrongSecretString
 #   PKCS7Padding,-256,,     # No Encryption
-env | grep "BSET*" >> /root/.obm/config/config.ini
+env | grep "BSET*" >> "${DOT_OBM}"/config/config.ini
 
 
 # Point OBM at configuation path
-echo "/root/.obm" > ${APP_HOME}/home.txt
+echo "${DOT_OBM}" > ${APP_HOME}/home.txt
 
 
 if [[ "${#}" == 0 ]]; then
@@ -46,7 +47,7 @@ if [[ "${#}" == 0 ]]; then
   fi
 
   # Monitor scheduler logs
-  tail -F /root/.obm/log/Scheduler/debug.log 2>/dev/null &
+  tail -F "${DOT_OBM}"/log/Scheduler/debug.log 2>/dev/null &
 
   # Starts Scheduler Service
   ${APP_HOME}/bin/Scheduler.sh
