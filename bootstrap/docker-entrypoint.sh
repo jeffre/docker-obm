@@ -51,6 +51,15 @@ if [[ "${#}" == 0 ]]; then
   # Starts Scheduler Service
   ${APP_HOME}/bin/Scheduler.sh
 
+elif [[ ${1,,} == "runbackupset" ]]; then
+  # $2 should be backupsetid
+  sed -i bin/RunBackupSet.sh \
+    -e 's|^BACKUP_SET=.*$|BACKUP_SET="${2}"|' \
+    -e 's|^SETTING_HOME=.*$|SETTING_HOME="${DOT_OBM}"|' 
+
+  ./bin/RunBackupSet.sh
+
 else
   exec "${@}"
+
 fi
