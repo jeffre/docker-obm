@@ -2,10 +2,8 @@ version: '2'
 
 services:
   obm:
-    build: .
     image: yoff/obm:latest
     restart: on-failure
-    mem_limit: 4g
     #volumes:
     #  - ./config:/root/.obm/config
     #  - ./logs:/root/.obm/log
