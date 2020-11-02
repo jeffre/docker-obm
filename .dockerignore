@@ -1,7 +1,1 @@
-# Space savers
-obm*/jre32/*
-obm*/bin/*.pdf
-obm*/bin/*.png
-obm*/bin/*.properties
-!obm*/bin/ObcCoreRes_en.properties
 .git

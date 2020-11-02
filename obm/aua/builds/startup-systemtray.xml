@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-
-<project name="startup-systemtray" default="startup-systemtray">
-
-  <target name="startup-systemtray" if="aua.os.family.is.windows">
-    <delete file="${aua.file.work.ipc.systemtray.shutdown}" failonerror="false" />
-  </target>
-
-</project>
